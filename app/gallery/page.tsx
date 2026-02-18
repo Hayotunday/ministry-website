@@ -1,0 +1,129 @@
+'use client';
+
+import { Header } from '@/components/header';
+import { Footer } from '@/components/footer';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { useState } from 'react';
+import { ChevronUp } from 'lucide-react';
+
+export default function Gallery() {
+  const [activeFilter, setActiveFilter] = useState('all');
+
+  const galleryItems = [
+    { id: 1, category: 'outreach', image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/gallery-page-jpSbXsfkhdfXAYPBH0fztkrSstSdVx.png', title: 'Community Outreach Program' },
+    { id: 2, category: 'community', image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/gallery-page-jpSbXsfkhdfXAYPBH0fztkrSstSdVx.png', title: 'Community Gathering' },
+    { id: 3, category: 'worship', image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/gallery-page-jpSbXsfkhdfXAYPBH0fztkrSstSdVx.png', title: 'Worship Session' },
+    { id: 4, category: 'youth', image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/gallery-page-jpSbXsfkhdfXAYPBH0fztkrSstSdVx.png', title: 'Youth Development' },
+    { id: 5, category: 'outreach', image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/gallery-page-jpSbXsfkhdfXAYPBH0fztkrSstSdVx.png', title: 'Outreach Mission' },
+    { id: 6, category: 'community', image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/gallery-page-jpSbXsfkhdfXAYPBH0fztkrSstSdVx.png', title: 'Community Service' },
+    { id: 7, category: 'worship', image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/gallery-page-jpSbXsfkhdfXAYPBH0fztkrSstSdVx.png', title: 'Spiritual Growth' },
+    { id: 8, category: 'youth', image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/gallery-page-jpSbXsfkhdfXAYPBH0fztkrSstSdVx.png', title: 'Youth Mentorship' },
+    { id: 9, category: 'community', image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/gallery-page-jpSbXsfkhdfXAYPBH0fztkrSstSdVx.png', title: 'Community Impact' },
+  ];
+
+  const filters = ['all', 'outreach', 'community', 'worship', 'youth'];
+
+  const filteredItems = activeFilter === 'all' 
+    ? galleryItems 
+    : galleryItems.filter(item => item.category === activeFilter);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Header />
+
+      {/* Hero Section */}
+      <section className="bg-gray-900 text-white py-20">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6">Ministry in Action</h1>
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+            Witness the impact of our community outreach, spiritual growth, and dedicated service across the globe.
+          </p>
+        </div>
+      </section>
+
+      {/* Filter Buttons */}
+      <section className="bg-white py-12">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-wrap gap-3 justify-center">
+            {filters.map((filter) => (
+              <button
+                key={filter}
+                onClick={() => setActiveFilter(filter)}
+                className={`px-6 py-2 rounded-full font-semibold transition-all capitalize ${
+                  activeFilter === filter
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                }`}
+              >
+                {filter === 'all' ? 'All Activities' : filter}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Gallery Grid */}
+      <section className="bg-gray-50 py-16 md:py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-max">
+            {filteredItems.map((item, idx) => (
+              <div
+                key={item.id}
+                className={`relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all group cursor-pointer ${
+                  idx === 0 || idx === 4 ? 'md:col-span-1 md:row-span-2' : ''
+                }`}
+              >
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
+                  <p className="text-white font-semibold p-4">{item.title}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="bg-blue-600 text-white py-16 md:py-24 rounded-3xl mx-6 mb-16">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">Support Our Mission</h2>
+          <p className="text-blue-100 mb-8 text-lg">
+            Your contributions help us continue our vital work in providing spiritual nourishment and physical support to those in need.
+          </p>
+          <div className="flex gap-4 justify-center flex-wrap">
+            <Link href="/contact">
+              <Button className="bg-white text-blue-600 hover:bg-blue-50 px-8 py-3 font-semibold">
+                Donate Now
+              </Button>
+            </Link>
+            <Link href="/programs">
+              <Button variant="outline" className="border-white text-white hover:bg-blue-700 px-8 py-3 font-semibold">
+                Get Involved
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Scroll to Top Button */}
+      <button
+        onClick={scrollToTop}
+        className="fixed bottom-8 right-8 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-colors z-40"
+        aria-label="Scroll to top"
+      >
+        <ChevronUp size={24} />
+      </button>
+
+      <Footer />
+    </div>
+  );
+}
