@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Menu, X } from "lucide-react";
+import { useState } from "react";
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { href: '/', label: 'Home' },
-    { href: '/about', label: 'About' },
-    { href: '/programs', label: 'Our Programs' },
-    { href: '/gallery', label: 'Gallery' },
-    { href: '/contact', label: 'Contact' },
+    { href: "/", label: "Home" },
+    { href: "/about", label: "About" },
+    { href: "/programs", label: "Our Programs" },
+    { href: "/gallery", label: "Gallery" },
+    { href: "/contact", label: "Contact" },
   ];
 
   return (
@@ -41,13 +41,13 @@ export function Header() {
         </div>
 
         {/* Desktop CTA */}
-        <div className="hidden md:block">
+        {/* <div className="hidden md:block">
           <Link href="/contact">
             <Button className="bg-blue-600 hover:bg-blue-700 text-white">
               Get Started
             </Button>
           </Link>
-        </div>
+        </div> */}
 
         {/* Mobile Menu Button */}
         <button
@@ -73,11 +73,11 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
-            <Link href="/contact" onClick={() => setIsOpen(false)}>
+            {/* <Link href="/contact" onClick={() => setIsOpen(false)}>
               <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
                 Get Started
               </Button>
-            </Link>
+            </Link> */}
           </div>
         </div>
       )}

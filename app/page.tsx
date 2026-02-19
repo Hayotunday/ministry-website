@@ -1,17 +1,28 @@
-import { Header } from '@/components/header';
-import { Footer } from '@/components/footer';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Heart, BookOpen, Users, Lightbulb, Target, Share2, Zap, Smile } from 'lucide-react';
-import Link from 'next/link';
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Heart,
+  BookOpen,
+  Users,
+  Lightbulb,
+  Target,
+  Share2,
+  Zap,
+  Smile,
+  Award,
+} from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      
+
       {/* Hero Section */}
-      <section className="bg-white py-12 md:py-20">
+      <section className="bg-white py-12 md:py-20 md:h-screen">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div>
@@ -19,11 +30,11 @@ export default function Home() {
                 A Better Tomorrow Starts Today
               </p>
               <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-                Repairer of the{' '}
-                <span className="text-blue-600">Breach</span>
+                Repairer of the <span className="text-blue-600">Breach</span>
               </h1>
               <p className="text-gray-600 text-lg mb-8 leading-relaxed">
-                Nurturing the next Generation for Christ. Empowering children and young people to walk in purpose and become agents of change.
+                Nurturing the next Generation for Christ. Empowering children
+                and young people to walk in purpose and become agents of change.
               </p>
               <div className="flex gap-4 flex-wrap">
                 <Link href="/programs">
@@ -31,17 +42,16 @@ export default function Home() {
                     Learn More
                   </Button>
                 </Link>
-                <Button variant="outline" className="border-blue-600 text-blue-600 hover:bg-blue-50 px-6 py-3">
-                  Our Programs
-                </Button>
               </div>
             </div>
             <div className="hidden md:flex justify-end">
-              <div className="bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl overflow-hidden shadow-lg w-full aspect-square max-w-md">
-                <img
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/index-page-K00Pt9FQK7LE5iID64UkyGVZqayEg8.png"
+              <div className="bg-linear-to-br from-gray-100 to-gray-200 rounded-2xl overflow-hidden shadow-lg w-full aspect-video max-w-md">
+                <Image
+                  src="imgs/WhatsApp Image 2026-02-11 at 5.11.46 AM.jpeg"
                   alt="Team"
-                  className="w-full h-full object-cover"
+                  width={500}
+                  height={500}
+                  className="w-full h-full object-fill"
                 />
               </div>
             </div>
@@ -59,7 +69,9 @@ export default function Home() {
                 <h3 className="text-2xl font-bold">Our Vision</h3>
               </div>
               <p className="text-blue-100 leading-relaxed">
-                To raise a generation of children and young people rooted in the knowledge of Christ. Who will grow to become leaders with strong biblical foundations and character that impacts their generation positively
+                To raise a generation of children and teenagers who know Christ,
+                live by godly values, fulfill their divine purpose, and
+                ultimately make heaven.
               </p>
             </div>
             <div className="bg-blue-500 p-8 rounded-lg">
@@ -68,7 +80,9 @@ export default function Home() {
                 <h3 className="text-2xl font-bold">Our Mission</h3>
               </div>
               <p className="text-blue-100 leading-relaxed">
-                To cultivate holistic development through the teaching of Christ and grounded values. To empower young leaders to be agents of change in their sphere of influence through discipleship and training.
+                Our mission is to nurture, mentor, and disciple children and
+                teenagers through the teaching of God’s Word, moral instruction,
+                prayer, and practical.
               </p>
             </div>
           </div>
@@ -82,15 +96,20 @@ export default function Home() {
             About the Ministry
           </h2>
           <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
-            Repairer of the Breach is a faith-based outreach dedicated to developing confident and purposeful young people with strong Biblical foundations.
+            Repairer of the Breach is a faith-based outreach dedicated to
+            developing confident and purposeful young people with strong
+            Biblical foundations.
           </p>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <Card className="border-l-4 border-l-blue-600">
               <CardContent className="pt-6">
-                <h3 className="font-bold text-lg mb-4 text-gray-900">Identity</h3>
+                <h3 className="font-bold text-lg mb-4 text-gray-900">
+                  Identity
+                </h3>
                 <p className="text-gray-600">
-                  Helping young people discover their identity in Christ through purposeful discipleship
+                  Helping young people discover their identity in Christ through
+                  purposeful discipleship
                 </p>
               </CardContent>
             </Card>
@@ -98,15 +117,19 @@ export default function Home() {
               <CardContent className="pt-6">
                 <h3 className="font-bold text-lg mb-4 text-gray-900">Values</h3>
                 <p className="text-gray-600">
-                  Instilling values, character development, and practical living skills rooted in biblical foundations
+                  Instilling values, character development, and practical living
+                  skills rooted in biblical foundations
                 </p>
               </CardContent>
             </Card>
             <Card className="border-l-4 border-l-blue-600">
               <CardContent className="pt-6">
-                <h3 className="font-bold text-lg mb-4 text-gray-900">Practical Skills</h3>
+                <h3 className="font-bold text-lg mb-4 text-gray-900">
+                  Practical Skills
+                </h3>
                 <p className="text-gray-600">
-                  Equipping youth with leadership and critical decision-making skills for effective everyday living
+                  Equipping youth with leadership and critical decision-making
+                  skills for effective everyday living
                 </p>
               </CardContent>
             </Card>
@@ -122,18 +145,40 @@ export default function Home() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
             {[
-              { icon: Heart, title: 'Dignity in Christ', desc: 'Understanding your worth and purpose' },
-              { icon: BookOpen, title: 'Biblical Life', desc: 'Building foundation on God\'s Word' },
-              { icon: Zap, title: 'Self-Worth', desc: 'Building confidence and self-esteem' },
-              { icon: Users, title: 'Active Living', desc: 'Engaging in meaningful service' },
-              { icon: Smile, title: 'Spiritual Growth', desc: 'Deepening faith and spiritual maturity' },
+              {
+                icon: Heart,
+                title: "Dignity in Christ",
+                desc: "Understanding your worth and purpose",
+              },
+              {
+                icon: BookOpen,
+                title: "Biblical Life",
+                desc: "Building foundation on God's Word",
+              },
+              {
+                icon: Zap,
+                title: "Self-Worth",
+                desc: "Building confidence and self-esteem",
+              },
+              {
+                icon: Users,
+                title: "Active Living",
+                desc: "Engaging in meaningful service",
+              },
+              {
+                icon: Smile,
+                title: "Spiritual Growth",
+                desc: "Deepening faith and spiritual maturity",
+              },
             ].map((pillar, idx) => {
               const Icon = pillar.icon;
               return (
                 <Card key={idx} className="text-center">
                   <CardContent className="pt-8">
                     <Icon className="text-blue-600 mx-auto mb-4" size={32} />
-                    <h3 className="font-bold text-lg mb-2 text-gray-900">{pillar.title}</h3>
+                    <h3 className="font-bold text-lg mb-2 text-gray-900">
+                      {pillar.title}
+                    </h3>
                     <p className="text-gray-600 text-sm">{pillar.desc}</p>
                   </CardContent>
                 </Card>
@@ -147,30 +192,40 @@ export default function Home() {
       <section className="bg-gray-50 py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-16">
-            Testimonials
+            Founder
           </h2>
           <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:items-start items-center">
               <div className="order-2 md:order-1">
-                <div className="bg-gradient-to-br from-red-400 to-amber-400 rounded-2xl overflow-hidden shadow-lg h-96">
-                  <img
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/contact-us-page-ZzO6u49wQf0mF8h9xZt6IRmTfARhx0.png"
-                    alt="Testimonial"
-                    className="w-full h-full object-cover"
+                <div className="bg-linear-to-br from-red-400 to-amber-400 rounded-2xl overflow-hidden shadow-lg h-96">
+                  <Image
+                    src="imgs/WhatsApp Image 2026-02-10 at 5.22.30 PM.jpeg"
+                    alt="Founder"
+                    width={500}
+                    height={500}
+                    className="object-cover"
                   />
                 </div>
               </div>
-              <div className="order-1 md:order-2">
-                <p className="text-blue-600 font-semibold uppercase text-sm mb-2">Testimonial</p>
-                <h3 className="text-3xl font-bold text-gray-900 mb-4">Mojisola Olawale</h3>
-                <p className="text-gray-600 mb-6 leading-relaxed">
-                  I deeply appreciate the solid spiritual foundation and character development that came through the programs at Repairer of the Breach. The teachings have shaped me holistically and have impacted my personal life immensely.
+              <div className="order-1 md:order-2 mt-5 flex flex-col items-center md:items-start">
+                <p className="text-blue-600 font-semibold uppercase text-sm mb-2">
+                  Testimonial
                 </p>
-                <p className="text-gray-900 font-semibold mb-4">Certified Financial Management Coach</p>
-                <div className="flex gap-4">
-                  <Link href="#" className="text-blue-600 hover:text-blue-700">
-                    <Share2 size={20} />
+                <h3 className="text-3xl font-bold text-gray-900 mb-4">
+                  Mojisola Olawale
+                </h3>
+                <p className="text-gray-600 mb-6 md:leading-relaxed text-center md:text-start">
+                  Hi, I am Mojisola olawale a certified emotional intelligence
+                  coach I help you communicate with confidence and clarity.
+                </p>
+                <div className="flex gap-4 flex-col md:flex-row items-center justify-start">
+                  <Link
+                    href="#"
+                    className="text-blue-600 hover:text-blue-700 bg-blue-200 rounded-full flex items-center justify-center w-10 h-10"
+                  >
+                    <Award size={25} />
                   </Link>
+                  <p className="text-gray-900 font-semibold">Certified Coach</p>
                 </div>
               </div>
             </div>
@@ -185,7 +240,9 @@ export default function Home() {
             Join our movement
           </h2>
           <p className="text-blue-100 mb-8 text-lg">
-            Be part of a community dedicated to raising the next generation of Christian leaders. Whether you are a parent, mentor, or volunteer, there is a place for you.
+            Be part of a community dedicated to raising the next generation of
+            Christian leaders. Whether you are a parent, mentor, or volunteer,
+            there is a place for you.
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
             <Link href="/programs">
@@ -194,7 +251,7 @@ export default function Home() {
               </Button>
             </Link>
             <Link href="/contact">
-              <Button variant="outline" className="border-white text-white hover:bg-blue-700 px-8 py-3 font-semibold">
+              <Button className="border-white text-white hover:bg-blue-700 px-8 py-3 font-semibold">
                 Get Started Today
               </Button>
             </Link>

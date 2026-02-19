@@ -1,35 +1,82 @@
-'use client';
+"use client";
 
-import { Header } from '@/components/header';
-import { Footer } from '@/components/footer';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { useState } from 'react';
-import { ChevronUp } from 'lucide-react';
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { useState } from "react";
+import { ChevronUp } from "lucide-react";
+import Image from "next/image";
 
 export default function Gallery() {
-  const [activeFilter, setActiveFilter] = useState('all');
+  const [activeFilter, setActiveFilter] = useState("all");
 
   const galleryItems = [
-    { id: 1, category: 'outreach', image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/gallery-page-jpSbXsfkhdfXAYPBH0fztkrSstSdVx.png', title: 'Community Outreach Program' },
-    { id: 2, category: 'community', image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/gallery-page-jpSbXsfkhdfXAYPBH0fztkrSstSdVx.png', title: 'Community Gathering' },
-    { id: 3, category: 'worship', image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/gallery-page-jpSbXsfkhdfXAYPBH0fztkrSstSdVx.png', title: 'Worship Session' },
-    { id: 4, category: 'youth', image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/gallery-page-jpSbXsfkhdfXAYPBH0fztkrSstSdVx.png', title: 'Youth Development' },
-    { id: 5, category: 'outreach', image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/gallery-page-jpSbXsfkhdfXAYPBH0fztkrSstSdVx.png', title: 'Outreach Mission' },
-    { id: 6, category: 'community', image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/gallery-page-jpSbXsfkhdfXAYPBH0fztkrSstSdVx.png', title: 'Community Service' },
-    { id: 7, category: 'worship', image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/gallery-page-jpSbXsfkhdfXAYPBH0fztkrSstSdVx.png', title: 'Spiritual Growth' },
-    { id: 8, category: 'youth', image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/gallery-page-jpSbXsfkhdfXAYPBH0fztkrSstSdVx.png', title: 'Youth Mentorship' },
-    { id: 9, category: 'community', image: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/gallery-page-jpSbXsfkhdfXAYPBH0fztkrSstSdVx.png', title: 'Community Impact' },
+    {
+      id: 1,
+      category: "outreach",
+      image: "imgs/WhatsApp Image 2026-02-11 at 5.21.27 AM (3).jpeg",
+      title: "Community Outreach Program",
+    },
+    {
+      id: 2,
+      category: "community",
+      image: "imgs/WhatsApp Image 2026-02-11 at 5.21.24 AM (1).jpeg",
+      title: "Community Gathering",
+    },
+    {
+      id: 3,
+      category: "worship",
+      image: "imgs/WhatsApp Image 2026-02-11 at 5.21.25 AM.jpeg",
+      title: "Worship Session",
+    },
+    {
+      id: 4,
+      category: "youth",
+      image: "imgs/WhatsApp Image 2026-02-11 at 5.21.27 AM (1).jpeg",
+      title: "Youth Development",
+    },
+    {
+      id: 5,
+      category: "outreach",
+      image: "imgs/WhatsApp Image 2026-02-11 at 5.21.27 AM.jpeg",
+      title: "Outreach Mission",
+    },
+    {
+      id: 6,
+      category: "community",
+      image: "imgs/WhatsApp Image 2026-02-11 at 5.21.26 AM (1).jpeg",
+      title: "Community Service",
+    },
+    {
+      id: 7,
+      category: "worship",
+      image: "imgs/WhatsApp Image 2026-02-11 at 5.21.26 AM.jpeg",
+      title: "Spiritual Growth",
+    },
+    {
+      id: 8,
+      category: "youth",
+      image: "imgs/WhatsApp Image 2026-02-11 at 5.11.46 AM.jpeg",
+      title: "Youth Mentorship",
+    },
+    {
+      id: 9,
+      category: "community",
+      image: "imgs/WhatsApp Image 2026-02-11 at 5.21.24 AM.jpeg",
+      title: "Community Impact",
+    },
   ];
 
-  const filters = ['all', 'outreach', 'community', 'worship', 'youth'];
+  const filters = ["all", "outreach", "community", "worship", "youth"];
 
-  const filteredItems = activeFilter === 'all' 
-    ? galleryItems 
-    : galleryItems.filter(item => item.category === activeFilter);
+  const filteredItems =
+    activeFilter === "all"
+      ? galleryItems
+      : galleryItems.filter((item) => item.category === activeFilter);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -39,9 +86,12 @@ export default function Gallery() {
       {/* Hero Section */}
       <section className="bg-gray-900 text-white py-20">
         <div className="max-w-7xl mx-auto px-6 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">Ministry in Action</h1>
+          <h1 className="text-5xl md:text-6xl font-bold mb-6">
+            Ministry in Action
+          </h1>
           <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Witness the impact of our community outreach, spiritual growth, and dedicated service across the globe.
+            Witness the impact of our community outreach, spiritual growth, and
+            dedicated service across the globe.
           </p>
         </div>
       </section>
@@ -56,11 +106,11 @@ export default function Gallery() {
                 onClick={() => setActiveFilter(filter)}
                 className={`px-6 py-2 rounded-full font-semibold transition-all capitalize ${
                   activeFilter === filter
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-100 text-gray-800 hover:bg-gray-200"
                 }`}
               >
-                {filter === 'all' ? 'All Activities' : filter}
+                {filter === "all" ? "All Activities" : filter}
               </button>
             ))}
           </div>
@@ -75,15 +125,18 @@ export default function Gallery() {
               <div
                 key={item.id}
                 className={`relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all group cursor-pointer ${
-                  idx === 0 || idx === 4 ? 'md:col-span-1 md:row-span-2' : ''
+                  idx === 0 || idx === 4 ? "md:col-span-1 md:row-span-2" : ""
                 }`}
               >
-                <img
+                <Image
                   src={item.image}
                   alt={item.title}
+                  width={600}
+                  height={400}
+                  priority
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end">
                   <p className="text-white font-semibold p-4">{item.title}</p>
                 </div>
               </div>
@@ -95,9 +148,12 @@ export default function Gallery() {
       {/* CTA Section */}
       <section className="bg-blue-600 text-white py-16 md:py-24 rounded-3xl mx-6 mb-16">
         <div className="max-w-4xl mx-auto px-6 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">Support Our Mission</h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            Support Our Mission
+          </h2>
           <p className="text-blue-100 mb-8 text-lg">
-            Your contributions help us continue our vital work in providing spiritual nourishment and physical support to those in need.
+            Your contributions help us continue our vital work in providing
+            spiritual nourishment and physical support to those in need.
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
             <Link href="/contact">
@@ -106,7 +162,7 @@ export default function Gallery() {
               </Button>
             </Link>
             <Link href="/programs">
-              <Button variant="outline" className="border-white text-white hover:bg-blue-700 px-8 py-3 font-semibold">
+              <Button className="border-white text-white hover:bg-blue-700 px-8 py-3 font-semibold">
                 Get Involved
               </Button>
             </Link>
