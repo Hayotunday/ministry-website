@@ -4,7 +4,7 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Mail, Phone, MapPin, Facebook, Share2 } from "lucide-react";
+import { Mail, Phone, MapPin, Share2, Facebook } from "lucide-react";
 import { useState } from "react";
 import {
   Accordion,
@@ -12,6 +12,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { toast } from "sonner";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -22,6 +23,7 @@ export default function Contact() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -33,14 +35,30 @@ export default function Contact() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate form submission
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setFormData({ fullName: "", email: "", subject: "", message: "" });
-    }, 3000);
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+        toast.success("Message sent successfully!");
+        setFormData({ fullName: "", email: "", subject: "", message: "" });
+        setTimeout(() => setSubmitted(false), 3000);
+      } else {
+        toast.error("Failed to send message. Please try again.");
+      }
+    } catch (error) {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const faqs = [
@@ -71,15 +89,7 @@ export default function Contact() {
       <Header />
 
       {/* Hero Section */}
-      <section
-        className="relative bg-cover bg-center py-20 md:py-32 rounded-none"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://hebbkx1anhila5yf.public.blob.vercel-storage.com/contact-us-page-ZzO6u49wQf0mF8h9xZt6IRmTfARhx0.png)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
+      <section className="relative bg-[url(/imgs/asset-13.jpeg)] bg-position-[center_-15rem] bg-cover bg-no-repeat py-20 md:py-32 rounded-none">
         <div className="max-w-7xl mx-auto px-6 text-center text-white relative z-10">
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
             Get in Touch with Us
@@ -184,9 +194,14 @@ export default function Contact() {
 
                 <Button
                   type="submit"
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 font-semibold"
+                  disabled={isSubmitting}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 font-semibold disabled:opacity-70"
                 >
-                  {submitted ? "Message Sent!" : "Send Message"}
+                  {isSubmitting
+                    ? "Sending..."
+                    : submitted
+                      ? "Message Sent!"
+                      : "Send Message"}
                 </Button>
               </form>
             </div>
@@ -206,7 +221,7 @@ export default function Contact() {
                         Email us
                       </p>
                       <p className="text-gray-900 font-semibold">
-                        info@repairerofthebreach.org
+                        oyegokemojisola@gmail.com
                       </p>
                     </div>
                   </CardContent>
@@ -220,7 +235,7 @@ export default function Contact() {
                         Call us
                       </p>
                       <p className="text-gray-900 font-semibold">
-                        +234 (0) 123 456 7890
+                        +234 802 7815 383
                       </p>
                     </div>
                   </CardContent>
@@ -234,7 +249,7 @@ export default function Contact() {
                         Visit us
                       </p>
                       <p className="text-gray-900 font-semibold">
-                        Lagos, Nigeria
+                        JFFX+2QC, Lagos Rd, Ikorodu, 104101, Lagos, Nigeria
                       </p>
                     </div>
                   </CardContent>
@@ -246,13 +261,17 @@ export default function Contact() {
                     Follow our journey
                   </p>
                   <div className="flex gap-4">
-                    <a
-                      href="#"
-                      className="text-blue-600 hover:text-blue-700 transition-colors"
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(window.location.origin);
+                        toast.success("Website URL copied to clipboard!");
+                      }}
+                      className="text-blue-600 hover:text-blue-700 bg-blue-100 hover:bg-blue-50 transition-colors flex items-center gap-2 p-2 rounded-full"
                     >
                       <Share2 size={24} />
-                    </a>
-                    <a
+                      <p>share</p>
+                    </button>
+                    {/* <a
                       href="#"
                       className="text-blue-600 hover:text-blue-700 transition-colors"
                     >
@@ -263,7 +282,7 @@ export default function Contact() {
                       className="text-blue-600 hover:text-blue-700 transition-colors"
                     >
                       <Mail size={24} />
-                    </a>
+                    </a> */}
                   </div>
                 </div>
               </div>

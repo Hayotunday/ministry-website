@@ -1,16 +1,22 @@
+"use client";
+
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, X } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import Image from "next/image";
 
 export default function Programs() {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
   const programs = [
     {
       title: "Mentorship & Discipleship",
       image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/our-program-page-fbY1WKO8EhDT5B5CRUlsGZHNZVm7gl.png",
+        "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&q=80&w=800",
       description:
         "Focusing on biblical teachings and one-on-one spiritual guidance to build a firm, unshakeable foundation for your faith journey.",
       features: [
@@ -22,9 +28,9 @@ export default function Programs() {
     {
       title: "Moral Instruction",
       image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/our-program-page-fbY1WKO8EhDT5B5CRUlsGZHNZVm7gl.png",
+        "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=800",
       description:
-        "Building godly character, integrity, and values-based leadership. We help individuals navigate complex ethical and moral landscapes with conviction.",
+        "Building Godly character, integrity, and values-based leadership. We help individuals navigate complex ethical and moral landscapes with conviction.",
       features: [
         "Integrity Ethics Workshops",
         "Servant Leadership Training",
@@ -34,7 +40,7 @@ export default function Programs() {
     {
       title: "Practical Life Skills",
       image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/our-program-page-fbY1WKO8EhDT5B5CRUlsGZHNZVm7gl.png",
+        "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=800",
       description:
         "Developing emotional intelligence, financial stewardship, and critical decision-making tools for effective everyday living.",
       features: [
@@ -46,7 +52,7 @@ export default function Programs() {
     {
       title: "Creative Activities",
       image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/our-program-page-fbY1WKO8EhDT5B5CRUlsGZHNZVm7gl.png",
+        "https://images.unsplash.com/photo-1560421683-6856ea585c78?auto=format&fit=crop&q=80&w=800",
       description:
         "Therapeutic expression, recreational fellowship, and community-building activities designed to refresh the soul and build bonds.",
       features: [
@@ -90,11 +96,14 @@ export default function Programs() {
                 key={idx}
                 className="overflow-hidden hover:shadow-lg transition-shadow"
               >
-                <div className="bg-gray-200 h-48 overflow-hidden">
+                <div
+                  className="bg-gray-200 h-48 overflow-hidden cursor-pointer"
+                  onClick={() => setSelectedImage(program.image)}
+                >
                   <img
                     src={program.image}
                     alt={program.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
                   />
                 </div>
                 <CardContent className="pt-6">
@@ -155,7 +164,7 @@ export default function Programs() {
             </div>
             <div className="bg-linear-to-br from-blue-400 to-blue-600 rounded-2xl h-96 overflow-hidden">
               <img
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/our-program-page-fbY1WKO8EhDT5B5CRUlsGZHNZVm7gl.png"
+                src="imgs/asset-16.jpeg"
                 alt="Community"
                 className="w-full h-full object-cover"
               />
@@ -188,6 +197,36 @@ export default function Programs() {
           </div>
         </div>
       </section>
+
+      {/* Lightbox Modal */}
+      {selectedImage && (
+        <div
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
+          onClick={() => setSelectedImage(null)}
+        >
+          <button
+            onClick={() => setSelectedImage(null)}
+            className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-50 cursor-pointer"
+          >
+            <X size={20} />
+          </button>
+          <div
+            className="relative"
+            onClick={(e) => e.stopPropagation()}
+            onBlur={() => setSelectedImage(null)}
+          >
+            <Image
+              loading="eager"
+              src={selectedImage}
+              alt="Program preview"
+              width={650}
+              height={650}
+              className="object-contain rounded-lg"
+              priority
+            />
+          </div>
+        </div>
+      )}
 
       <Footer />
     </div>
