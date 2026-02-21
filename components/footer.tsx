@@ -1,7 +1,8 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { Facebook, Mail, Share2 } from 'lucide-react';
+import Link from "next/link";
+import { Facebook, Mail, Share2 } from "lucide-react";
+import { toast } from "sonner";
 
 export function Footer() {
   return (
@@ -17,18 +18,32 @@ export function Footer() {
               <span className="font-bold text-lg">Repairer of the Breach</span>
             </div>
             <p className="text-gray-400 text-sm">
-              Nurturing the next generation of Christian leaders and changemakers
+              Nurturing the next generation of Christian leaders and
+              changemakers
             </p>
             <div className="flex gap-4 mt-4">
-              <Link href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
+              {/* <Link
+                href="#"
+                className="text-gray-400 hover:text-blue-400 transition-colors"
+              >
                 <Facebook size={20} />
               </Link>
-              <Link href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
+              <Link
+                href="#"
+                className="text-gray-400 hover:text-blue-400 transition-colors"
+              >
                 <Mail size={20} />
-              </Link>
-              <Link href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
+              </Link> */}
+              <button
+                onClick={() => {
+                  navigator.clipboard.writeText(window.location.origin);
+                  toast.success("Website URL copied to clipboard!");
+                }}
+                className="text-gray-400 hover:text-blue-400 bg-gray-800 hover:bg-gray-700 transition-colors flex items-center gap-2 p-2 rounded-full"
+              >
                 <Share2 size={20} />
-              </Link>
+                <p>share</p>
+              </button>
             </div>
           </div>
 
@@ -37,27 +52,42 @@ export function Footer() {
             <h3 className="font-semibold mb-4 text-white">Quick Links</h3>
             <ul className="space-y-2 text-gray-400 text-sm">
               <li>
-                <Link href="/" className="hover:text-blue-400 transition-colors">
+                <Link
+                  href="/"
+                  className="hover:text-blue-400 transition-colors"
+                >
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-blue-400 transition-colors">
+                <Link
+                  href="/about"
+                  className="hover:text-blue-400 transition-colors"
+                >
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="/programs" className="hover:text-blue-400 transition-colors">
+                <Link
+                  href="/programs"
+                  className="hover:text-blue-400 transition-colors"
+                >
                   Our Programs
                 </Link>
               </li>
               <li>
-                <Link href="/gallery" className="hover:text-blue-400 transition-colors">
+                <Link
+                  href="/gallery"
+                  className="hover:text-blue-400 transition-colors"
+                >
                   Gallery
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-blue-400 transition-colors">
+                <Link
+                  href="/contact"
+                  className="hover:text-blue-400 transition-colors"
+                >
                   Contact
                 </Link>
               </li>
@@ -68,21 +98,10 @@ export function Footer() {
           <div>
             <h3 className="font-semibold mb-4 text-white">Connect</h3>
             <ul className="space-y-2 text-gray-400 text-sm">
-              <li>Email: info@repairerofthebreach.org</li>
-              <li>Phone: +234 (0) 123 456 7890</li>
-              <li>Lagos, Nigeria</li>
-              <li className="pt-2">
-                <Link href="/privacy" className="hover:text-blue-400 transition-colors text-xs">
-                  Privacy Policy
-                </Link>
-                {' • '}
-                <Link href="/terms" className="hover:text-blue-400 transition-colors text-xs">
-                  Terms of Service
-                </Link>
-                {' • '}
-                <Link href="#" className="hover:text-blue-400 transition-colors text-xs">
-                  Cookies
-                </Link>
+              <li>Email: oyegokemojisola@gmail.com</li>
+              <li>Phone: +234 802 7815 383</li>
+              <li>
+                Address: JFFX+2QC, Lagos Rd, Ikorodu, 104101, Lagos, Nigeria
               </li>
             </ul>
           </div>
@@ -90,7 +109,7 @@ export function Footer() {
 
         <div className="border-t border-gray-800 pt-8">
           <p className="text-gray-400 text-sm text-center">
-            © 2024 Repairer of the Breach. All rights reserved.
+            © 2026 Repairer of the Breach. All rights reserved.
           </p>
         </div>
       </div>

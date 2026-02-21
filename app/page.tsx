@@ -47,7 +47,8 @@ export default function Home() {
             <div className="hidden md:flex justify-end">
               <div className="bg-linear-to-br from-gray-100 to-gray-200 rounded-2xl overflow-hidden shadow-lg w-full aspect-video max-w-md">
                 <Image
-                  src="imgs/WhatsApp Image 2026-02-11 at 5.11.46 AM.jpeg"
+                  loading="eager"
+                  src="imgs/asset-1.jpeg"
                   alt="Team"
                   width={500}
                   height={500}
@@ -70,7 +71,7 @@ export default function Home() {
               </div>
               <p className="text-blue-100 leading-relaxed">
                 To raise a generation of children and teenagers who know Christ,
-                live by godly values, fulfill their divine purpose, and
+                live by Godly values, fulfill their divine purpose, and
                 ultimately make heaven.
               </p>
             </div>
@@ -199,7 +200,8 @@ export default function Home() {
               <div className="order-2 md:order-1">
                 <div className="bg-linear-to-br from-red-400 to-amber-400 rounded-2xl overflow-hidden shadow-lg h-96">
                   <Image
-                    src="imgs/WhatsApp Image 2026-02-10 at 5.22.30 PM.jpeg"
+                    loading="eager"
+                    src="imgs/founder-2.jpeg"
                     alt="Founder"
                     width={500}
                     height={500}

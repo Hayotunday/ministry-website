@@ -5,65 +5,66 @@ import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useState } from "react";
-import { ChevronUp } from "lucide-react";
+import { ChevronUp, X } from "lucide-react";
 import Image from "next/image";
 
 export default function Gallery() {
   const [activeFilter, setActiveFilter] = useState("all");
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const galleryItems = [
     {
       id: 1,
       category: "outreach",
-      image: "imgs/WhatsApp Image 2026-02-11 at 5.21.27 AM (3).jpeg",
+      image: "imgs/asset-13.jpeg",
       title: "Community Outreach Program",
     },
     {
       id: 2,
       category: "community",
-      image: "imgs/WhatsApp Image 2026-02-11 at 5.21.24 AM (1).jpeg",
+      image: "imgs/asset-6.jpeg",
       title: "Community Gathering",
     },
     {
       id: 3,
       category: "worship",
-      image: "imgs/WhatsApp Image 2026-02-11 at 5.21.25 AM.jpeg",
+      image: "imgs/asset-8.jpeg",
       title: "Worship Session",
     },
     {
       id: 4,
       category: "youth",
-      image: "imgs/WhatsApp Image 2026-02-11 at 5.21.27 AM (1).jpeg",
+      image: "imgs/asset-11.jpeg",
       title: "Youth Development",
     },
     {
       id: 5,
       category: "outreach",
-      image: "imgs/WhatsApp Image 2026-02-11 at 5.21.27 AM.jpeg",
+      image: "imgs/asset-14.jpeg",
       title: "Outreach Mission",
     },
     {
       id: 6,
       category: "community",
-      image: "imgs/WhatsApp Image 2026-02-11 at 5.21.26 AM (1).jpeg",
+      image: "imgs/asset-9.jpeg",
       title: "Community Service",
     },
     {
       id: 7,
       category: "worship",
-      image: "imgs/WhatsApp Image 2026-02-11 at 5.21.26 AM.jpeg",
+      image: "imgs/asset-10.jpeg",
       title: "Spiritual Growth",
     },
     {
       id: 8,
       category: "youth",
-      image: "imgs/WhatsApp Image 2026-02-11 at 5.11.46 AM.jpeg",
+      image: "imgs/asset-1.jpeg",
       title: "Youth Mentorship",
     },
     {
       id: 9,
       category: "community",
-      image: "imgs/WhatsApp Image 2026-02-11 at 5.21.24 AM.jpeg",
+      image: "imgs/asset-7.jpeg",
       title: "Community Impact",
     },
   ];
@@ -124,11 +125,13 @@ export default function Gallery() {
             {filteredItems.map((item, idx) => (
               <div
                 key={item.id}
+                onClick={() => setSelectedImage(item.image)}
                 className={`relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all group cursor-pointer ${
                   idx === 0 || idx === 4 ? "md:col-span-1 md:row-span-2" : ""
                 }`}
               >
                 <Image
+                  loading="eager"
                   src={item.image}
                   alt={item.title}
                   width={600}
@@ -178,6 +181,36 @@ export default function Gallery() {
       >
         <ChevronUp size={24} />
       </button>
+
+      {/* Lightbox Modal */}
+      {selectedImage && (
+        <div
+          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
+          onClick={() => setSelectedImage(null)}
+        >
+          <button
+            onClick={() => setSelectedImage(null)}
+            className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-50 cursor-pointer"
+          >
+            <X size={20} />
+          </button>
+          <div
+            className="relative"
+            onClick={(e) => e.stopPropagation()}
+            onBlur={() => setSelectedImage(null)}
+          >
+            <Image
+              loading="eager"
+              src={selectedImage}
+              alt="Gallery preview"
+              width={650}
+              height={650}
+              className="object-contain rounded-lg"
+              priority
+            />
+          </div>
+        </div>
+      )}
 
       <Footer />
     </div>

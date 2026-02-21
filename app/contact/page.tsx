@@ -12,6 +12,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { toast } from "sonner";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -71,15 +72,7 @@ export default function Contact() {
       <Header />
 
       {/* Hero Section */}
-      <section
-        className="relative bg-cover bg-center py-20 md:py-32 rounded-none"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://hebbkx1anhila5yf.public.blob.vercel-storage.com/contact-us-page-ZzO6u49wQf0mF8h9xZt6IRmTfARhx0.png)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
+      <section className="relative bg-[url(/imgs/asset-13.jpeg)] bg-position-[center_-15rem] bg-cover bg-no-repeat py-20 md:py-32 rounded-none">
         <div className="max-w-7xl mx-auto px-6 text-center text-white relative z-10">
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
             Get in Touch with Us
@@ -206,7 +199,7 @@ export default function Contact() {
                         Email us
                       </p>
                       <p className="text-gray-900 font-semibold">
-                        info@repairerofthebreach.org
+                        oyegokemojisola@gmail.com
                       </p>
                     </div>
                   </CardContent>
@@ -220,7 +213,7 @@ export default function Contact() {
                         Call us
                       </p>
                       <p className="text-gray-900 font-semibold">
-                        +234 (0) 123 456 7890
+                        +234 802 7815 383
                       </p>
                     </div>
                   </CardContent>
@@ -234,7 +227,7 @@ export default function Contact() {
                         Visit us
                       </p>
                       <p className="text-gray-900 font-semibold">
-                        Lagos, Nigeria
+                        JFFX+2QC, Lagos Rd, Ikorodu, 104101, Lagos, Nigeria
                       </p>
                     </div>
                   </CardContent>
@@ -246,13 +239,17 @@ export default function Contact() {
                     Follow our journey
                   </p>
                   <div className="flex gap-4">
-                    <a
-                      href="#"
-                      className="text-blue-600 hover:text-blue-700 transition-colors"
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(window.location.origin);
+                        toast.success("Website URL copied to clipboard!");
+                      }}
+                      className="text-blue-600 hover:text-blue-700 bg-blue-100 hover:bg-blue-50 transition-colors flex items-center gap-2 p-2 rounded-full"
                     >
                       <Share2 size={24} />
-                    </a>
-                    <a
+                      <p>share</p>
+                    </button>
+                    {/* <a
                       href="#"
                       className="text-blue-600 hover:text-blue-700 transition-colors"
                     >
@@ -263,7 +260,7 @@ export default function Contact() {
                       className="text-blue-600 hover:text-blue-700 transition-colors"
                     >
                       <Mail size={24} />
-                    </a>
+                    </a> */}
                   </div>
                 </div>
               </div>
