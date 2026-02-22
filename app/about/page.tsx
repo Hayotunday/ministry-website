@@ -173,16 +173,19 @@ export default function About() {
                 name: "Mojisola Olawale",
                 role: "Founder & Executive Director",
                 bio: "Visionary leader with 10+ years in youth development and spiritual formation",
+                src: "/imgs/founder-1.jpeg",
               },
               {
                 name: "Femi Olawale",
                 role: "Programs Director",
                 bio: "Passionate about creating transformative experiences for young leaders",
+                src: "/imgs/founder-3.jpeg",
               },
               {
                 name: "Femi Olawale",
                 role: "Community Outreach Manager",
                 bio: "Dedicated to building meaningful relationships within our communities",
+                src: "/imgs/founder-3.jpeg",
               },
             ].map((member, idx) => (
               <Card key={idx} className="text-center">
@@ -190,8 +193,8 @@ export default function About() {
                   <div className="w-24 h-24 bg-linear-to-br from-blue-400 to-blue-600 rounded-full mx-auto mb-4">
                     <Image
                       loading="eager"
-                      src="/imgs/founder-1.jpeg"
-                      alt="mojisola olawale"
+                      src={member.src}
+                      alt={member.name}
                       width={100}
                       height={100}
                       className="object-cover w-full h-full rounded-full"
