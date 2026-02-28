@@ -4,70 +4,28 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronUp, X } from "lucide-react";
 import Image from "next/image";
+import { getGalleryItems, type GalleryItem } from "@/lib/gallery";
 
 export default function Gallery() {
   const [activeFilter, setActiveFilter] = useState("all");
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const galleryItems = [
-    {
-      id: 1,
-      category: "outreach",
-      image: "imgs/asset-13.jpeg",
-      title: "Community Outreach Program",
-    },
-    {
-      id: 2,
-      category: "community",
-      image: "imgs/asset-6.jpeg",
-      title: "Community Gathering",
-    },
-    {
-      id: 3,
-      category: "worship",
-      image: "imgs/asset-8.jpeg",
-      title: "Worship Session",
-    },
-    {
-      id: 4,
-      category: "youth",
-      image: "imgs/asset-11.jpeg",
-      title: "Youth Development",
-    },
-    {
-      id: 5,
-      category: "outreach",
-      image: "imgs/asset-14.jpeg",
-      title: "Outreach Mission",
-    },
-    {
-      id: 6,
-      category: "community",
-      image: "imgs/asset-9.jpeg",
-      title: "Community Service",
-    },
-    {
-      id: 7,
-      category: "worship",
-      image: "imgs/asset-10.jpeg",
-      title: "Spiritual Growth",
-    },
-    {
-      id: 8,
-      category: "youth",
-      image: "imgs/asset-1.jpeg",
-      title: "Youth Mentorship",
-    },
-    {
-      id: 9,
-      category: "community",
-      image: "imgs/asset-7.jpeg",
-      title: "Community Impact",
-    },
-  ];
+  useEffect(() => {
+    const fetchGallery = async () => {
+      setIsLoading(true);
+      const items = await getGalleryItems();
+      // Use fetched items if available, otherwise use defaults
+      setGalleryItems(items);
+      setIsLoading(false);
+    };
+
+    fetchGallery();
+  }, []);
 
   const filters = ["all", "outreach", "community", "worship", "youth"];
 
@@ -75,6 +33,20 @@ export default function Gallery() {
     activeFilter === "all"
       ? galleryItems
       : galleryItems.filter((item) => item.category === activeFilter);
+
+  // incremental display: show a subset and load more on demand
+  const [itemsToShow, setItemsToShow] = useState(6);
+  const visibleItems = filteredItems.slice(0, itemsToShow);
+  const loadMore = () => setItemsToShow((n) => n + 6);
+
+  // scroll-to-top visibility toggle
+  const [showScrollButton, setShowScrollButton] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setShowScrollButton(window.scrollY > 300);
+    window.addEventListener("scroll", onScroll);
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -122,17 +94,17 @@ export default function Gallery() {
       <section className="bg-gray-50 py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-max">
-            {filteredItems.map((item, idx) => (
+            {visibleItems.map((item, idx) => (
               <div
                 key={item.id}
-                onClick={() => setSelectedImage(item.image)}
+                onClick={() => setSelectedImage(item.imageUrl)}
                 className={`relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all group cursor-pointer ${
                   idx === 0 || idx === 4 ? "md:col-span-1 md:row-span-2" : ""
                 }`}
               >
                 <Image
                   loading="eager"
-                  src={item.image}
+                  src={item.imageUrl}
                   alt={item.title}
                   width={600}
                   height={400}
@@ -145,6 +117,12 @@ export default function Gallery() {
               </div>
             ))}
           </div>
+
+          {itemsToShow < filteredItems.length && (
+            <div className="mt-8 flex justify-center">
+              <Button onClick={loadMore}>Load more</Button>
+            </div>
+          )}
         </div>
       </section>
 
@@ -173,14 +151,16 @@ export default function Gallery() {
         </div>
       </section>
 
-      {/* Scroll to Top Button */}
-      <button
-        onClick={scrollToTop}
-        className="fixed bottom-8 right-8 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-colors z-40"
-        aria-label="Scroll to top"
-      >
-        <ChevronUp size={24} />
-      </button>
+      {/* Scroll to Top Button (shown when scrolled) */}
+      {showScrollButton && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-8 right-8 bg-blue-600 text-white p-4 rounded-full shadow-lg hover:bg-blue-700 transition-colors z-40"
+          aria-label="Scroll to top"
+        >
+          <ChevronUp size={24} />
+        </button>
+      )}
 
       {/* Lightbox Modal */}
       {selectedImage && (

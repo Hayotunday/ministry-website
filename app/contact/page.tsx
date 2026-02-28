@@ -5,7 +5,8 @@ import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Mail, Phone, MapPin, Share2, Facebook } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getContactInfo, type ContactInfo } from "@/lib/contact";
 import {
   Accordion,
   AccordionContent,
@@ -15,6 +16,12 @@ import {
 import { toast } from "sonner";
 
 export default function Contact() {
+  const [contactInfo, setContactInfo] = useState<ContactInfo>({
+    email: "",
+    phone: "",
+    address: "",
+  });
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -24,6 +31,14 @@ export default function Contact() {
 
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    getContactInfo().then((info) => {
+      if (info.email || info.phone || info.address) {
+        setContactInfo(info);
+      }
+    });
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -221,7 +236,7 @@ export default function Contact() {
                         Email us
                       </p>
                       <p className="text-gray-900 font-semibold">
-                        oyegokemojisola@gmail.com
+                        {contactInfo.email}
                       </p>
                     </div>
                   </CardContent>
@@ -235,7 +250,7 @@ export default function Contact() {
                         Call us
                       </p>
                       <p className="text-gray-900 font-semibold">
-                        +234 802 7815 383
+                        {contactInfo.phone}
                       </p>
                     </div>
                   </CardContent>
@@ -249,7 +264,7 @@ export default function Contact() {
                         Visit us
                       </p>
                       <p className="text-gray-900 font-semibold">
-                        JFFX+2QC, Lagos Rd, Ikorodu, 104101, Lagos, Nigeria
+                        {contactInfo.address}
                       </p>
                     </div>
                   </CardContent>

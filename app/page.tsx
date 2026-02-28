@@ -48,7 +48,7 @@ export default function Home() {
               <div className="bg-linear-to-br from-gray-100 to-gray-200 rounded-2xl overflow-hidden shadow-lg w-full aspect-video max-w-md">
                 <Image
                   loading="eager"
-                  src="imgs/asset-1.jpeg"
+                  src="https://dug72hdrm9v26fbc.public.blob.vercel-storage.com/gallery/asset-1.jpeg"
                   alt="Team"
                   width={500}
                   height={500}
@@ -189,7 +189,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonial */}
+      {/* Founder */}
       <section className="bg-gray-50 py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-6">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-16">
@@ -201,7 +201,7 @@ export default function Home() {
                 <div className="bg-linear-to-br from-red-400 to-amber-400 rounded-2xl overflow-hidden shadow-lg h-96">
                   <Image
                     loading="eager"
-                    src="imgs/founder-2.jpeg"
+                    src="https://dug72hdrm9v26fbc.public.blob.vercel-storage.com/gallery/founder-2.jpeg"
                     alt="Founder"
                     width={500}
                     height={500}

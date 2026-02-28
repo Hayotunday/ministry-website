@@ -167,25 +167,20 @@ export default function About() {
           <h2 className="text-4xl font-bold text-gray-900 text-center mb-16">
             Meet Our Leadership
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {[
               {
                 name: "Mojisola Olawale",
                 role: "Founder & Executive Director",
                 bio: "Visionary leader with 10+ years in youth development and spiritual formation",
-                src: "/imgs/founder-1.jpeg",
+                src: "https://dug72hdrm9v26fbc.public.blob.vercel-storage.com/gallery/founder-1.jpeg",
               },
               {
                 name: "Femi Olawale",
-                role: "Programs Director",
-                bio: "Passionate about creating transformative experiences for young leaders",
-                src: "/imgs/founder-3.jpeg",
-              },
-              {
-                name: "Femi Olawale",
-                role: "Community Outreach Manager",
-                bio: "Dedicated to building meaningful relationships within our communities",
-                src: "/imgs/founder-3.jpeg",
+                role: "Programs Director & Community Outreach Manager",
+                bio: `Passionate about creating transformative experiences for young leaders and 
+                      dedicated to building meaningful relationships within our communities`,
+                src: "https://dug72hdrm9v26fbc.public.blob.vercel-storage.com/gallery/founder-3.jpeg",
               },
             ].map((member, idx) => (
               <Card key={idx} className="text-center">

@@ -1,10 +1,26 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Facebook, Mail, Share2 } from "lucide-react";
 import { toast } from "sonner";
+import { getContactInfo, type ContactInfo } from "@/lib/contact";
 
 export function Footer() {
+  const [contactInfo, setContactInfo] = useState<ContactInfo>({
+    email: "",
+    phone: "",
+    address: "",
+  });
+
+  useEffect(() => {
+    getContactInfo().then((info) => {
+      if (info.email || info.phone || info.address) {
+        setContactInfo(info);
+      }
+    });
+  }, []);
+
   return (
     <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-6 py-12">
@@ -98,11 +114,9 @@ export function Footer() {
           <div>
             <h3 className="font-semibold mb-4 text-white">Connect</h3>
             <ul className="space-y-2 text-gray-400 text-sm">
-              <li>Email: oyegokemojisola@gmail.com</li>
-              <li>Phone: +234 802 7815 383</li>
-              <li>
-                Address: JFFX+2QC, Lagos Rd, Ikorodu, 104101, Lagos, Nigeria
-              </li>
+              <li>Email: {contactInfo.email}</li>
+              <li>Phone: {contactInfo.phone}</li>
+              <li>Address: {contactInfo.address}</li>
             </ul>
           </div>
         </div>
