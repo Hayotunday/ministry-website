@@ -15,9 +15,19 @@ import {
   CardHeader,
   CardTitle,
   CardContent,
-  CardAction,
+  CardDescription,
 } from "@/components/ui/card";
 import { Edit, Trash, ImageIcon, Phone, FileText } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   type ContactInfo,
   getContactInfo,
@@ -29,9 +39,10 @@ import {
   getGalleryItems,
 } from "@/lib/gallery";
 import { formatPhoneNumber } from "@/lib/utils";
+import Image from "next/image";
 
 export default function AdminPage() {
-  const pageSize = 6;
+  const pageSize = 8;
 
   const imageRef = useRef<HTMLInputElement>(null);
 
@@ -41,6 +52,7 @@ export default function AdminPage() {
   const [page, setPage] = useState(0);
   const [isLastPage, setIsLastPage] = useState(false);
   const [loadingGallery, setLoadingGallery] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [contactInfo, setContactInfo] = useState<ContactInfo>({
     email: "",
     phone: "",
@@ -107,6 +119,7 @@ export default function AdminPage() {
   };
 
   const saveContact = async () => {
+    setIsSubmitting(true);
     const token = await getToken();
     if (!token) {
       toast.error("Not authenticated");
@@ -119,6 +132,7 @@ export default function AdminPage() {
     } else {
       toast.error(result.error || "Failed to save contact info");
     }
+    setIsSubmitting(false);
   };
 
   const fetchPrograms = async () => {
@@ -171,70 +185,37 @@ export default function AdminPage() {
     if (items.length < pageSize) setIsLastPage(true);
   };
 
-  // upload helper returns url and publicId or null
   const uploadFile = async (
     file: File,
-  ): Promise<{ url: string; publicId: string } | null> => {
+  ): Promise<{ imageUrl: string; publicId: string } | null> => {
+    setIsSubmitting(true);
     const form = new FormData();
     form.append("file", file);
     try {
-      const r = await fetch("/api/upload", {
+      const response = await fetch("/api/upload", {
         method: "POST",
         body: form,
       });
-      const blob = await r.json();
+      const blob = await response.json();
       if (blob?.url && blob?.publicId) {
-        return { url: blob.url, publicId: blob.publicId };
+        return { imageUrl: blob.url, publicId: blob.publicId };
       }
       return null;
     } catch (err) {
       console.error("upload failed", err);
+      toast.error("Image upload failed.");
       return null;
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  // uploads a File object and updates form state
-  const handleImageUpload = async (file: File) => {
-    if (!file) return;
-    setSelectedFile(file);
-    const result = await uploadFile(file);
-    if (result) {
-      setGalleryForm((prev) => ({
-        ...prev,
-        imageUrl: result.url,
-        publicId: result.publicId,
-      }));
-      toast.success("Image uploaded. Add title and category to save.");
-    } else {
-      toast.error("Upload failed");
-    }
-  };
-
-  const addGalleryItem = async () => {
-    // if there's a file pending, perform the upload when save is clicked
-    if (selectedFile) {
-      await handleImageUpload(selectedFile);
-    }
-
-    // ensure we have a url and publicId; after upload attempt above the form should be populated
-    if (!galleryForm.imageUrl && selectedFile) {
-      const result = await uploadFile(selectedFile);
-      if (result) {
-        setGalleryForm((f) => ({
-          ...f,
-          imageUrl: result.url,
-          publicId: result.publicId,
-        }));
-      }
-    }
-
-    if (
-      !galleryForm.title ||
-      !galleryForm.category ||
-      !galleryForm.imageUrl ||
-      !galleryForm.publicId
-    ) {
-      toast.error("Please fill in all fields");
+  const addGalleryItem = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    if (!galleryForm.title || !galleryForm.category || !selectedFile) {
+      toast.error("Please fill in title, category, and select an image.");
+      setIsSubmitting(false);
       return;
     }
 
@@ -244,13 +225,21 @@ export default function AdminPage() {
       return;
     }
 
+    const uploadResult = await uploadFile(selectedFile);
+    console.log("upload: ", uploadResult);
+    if (!uploadResult) {
+      setIsSubmitting(false);
+      toast.error("Failed to upload image.");
+      return;
+    }
+
     const res = await fetch("/api/admin/gallery", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(galleryForm),
+      body: JSON.stringify({ ...galleryForm, ...uploadResult }),
     });
 
     if (res.ok) {
@@ -259,10 +248,13 @@ export default function AdminPage() {
       setGalleryFormOpen(false);
       setSelectedFile(null);
       setPreviewUrl(null);
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
       fetchGallery();
     } else {
       toast.error("Failed to add gallery item");
     }
+
+    setIsSubmitting(false);
   };
 
   const handleDeleteGalleryItem = async (id?: string, publicId?: string) => {
@@ -283,24 +275,35 @@ export default function AdminPage() {
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <Card className="w-96">
           <CardHeader>
-            <CardTitle>Admin Login</CardTitle>
+            <CardTitle>Admin Portal</CardTitle>
+            <CardDescription>
+              Please log in to manage website content.
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={login} className="space-y-4">
-              <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="border p-2 w-full rounded"
-              />
-              <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="border p-2 w-full rounded"
-              />
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="admin@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
               <Button type="submit" className="w-full">
                 Login
               </Button>
@@ -312,9 +315,12 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto py-10 space-y-8">
+    <div className="max-w-7xl mx-auto py-10 px-4 md:px-6 space-y-8">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+        <div>
+          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+          <p className="text-muted-foreground">Manage your website content.</p>
+        </div>
         <Button variant="secondary" onClick={logout}>
           Logout
         </Button>
@@ -323,81 +329,84 @@ export default function AdminPage() {
       <div className="grid grid-cols-1 gap-6">
         {/* contact */}
         <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Phone className="w-5 h-5" /> Contact Info
-            </CardTitle>
-            <CardAction className="space-x-2">
+          <CardHeader className="flex flex-row items-start justify-between">
+            <div>
+              <CardTitle className="flex items-center gap-2">
+                <Phone className="w-5 h-5" /> Contact Information
+              </CardTitle>
+              <CardDescription>
+                Update the public contact details for the ministry.
+              </CardDescription>
+            </div>
+            <div className="flex items-center space-x-2">
               {mode === "view" && (
                 <Button
                   size="sm"
-                  className="cursor-pointer"
                   onClick={() => {
                     setMode("edit");
                     setOldContactInfo(contactInfo);
                   }}
                 >
-                  Edit
+                  <Edit className="w-4 h-4 mr-2" /> Edit
                 </Button>
               )}
 
               {mode === "edit" && (
                 <>
                   <Button
-                    variant="destructive"
-                    className="cursor-pointer"
+                    variant="ghost"
                     size="sm"
                     onClick={() => {
                       setMode("view");
                       setContactInfo(oldContactInfo);
                     }}
+                    disabled={isSubmitting}
                   >
                     Cancel
                   </Button>
 
                   <Button
-                    variant="outline"
-                    className="cursor-pointer"
                     size="sm"
                     onClick={saveContact}
+                    disabled={isSubmitting}
                   >
-                    Save
+                    {isSubmitting ? "Saving..." : "Save"}
                   </Button>
                 </>
               )}
-            </CardAction>
+            </div>
           </CardHeader>
-          <CardContent className="space-y-3">
-            <div>
-              <label className="block text-sm mb-1">Email</label>
-              <input
-                className="border p-2 w-full rounded"
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="contact-email">Email</Label>
+              <Input
+                id="contact-email"
                 value={contactInfo.email || ""}
                 disabled={mode === "view"}
                 onChange={(e) =>
-                  setContactInfo((c: any) => ({ ...c, email: e.target.value }))
+                  setContactInfo((c) => ({ ...c, email: e.target.value }))
                 }
               />
             </div>
-            <div>
-              <label className="block text-sm mb-1">Phone</label>
-              <input
-                className="border p-2 w-full rounded"
+            <div className="space-y-2">
+              <Label htmlFor="contact-phone">Phone</Label>
+              <Input
+                id="contact-phone"
                 value={formatPhoneNumber(contactInfo.phone || "")}
                 disabled={mode === "view"}
                 onChange={(e) =>
-                  setContactInfo((c: any) => ({ ...c, phone: e.target.value }))
+                  setContactInfo((c) => ({ ...c, phone: e.target.value }))
                 }
               />
             </div>
-            <div>
-              <label className="block text-sm mb-1">Address</label>
-              <textarea
-                className="border p-2 w-full rounded"
+            <div className="space-y-2">
+              <Label htmlFor="contact-address">Address</Label>
+              <Textarea
+                id="contact-address"
                 value={contactInfo.address || ""}
                 disabled={mode === "view"}
                 onChange={(e) =>
-                  setContactInfo((c: any) => ({
+                  setContactInfo((c) => ({
                     ...c,
                     address: e.target.value,
                   }))
@@ -439,133 +448,153 @@ export default function AdminPage() {
 
         {/* gallery */}
         <Card className="md:col-span-2">
-          <CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="flex items-center gap-2">
               <ImageIcon className="w-5 h-5" /> Gallery
             </CardTitle>
-            <CardAction>
+            <div className="flex items-center">
               <Button
                 size="sm"
                 variant={galleryFormOpen ? "destructive" : "default"}
                 onClick={() => setGalleryFormOpen(!galleryFormOpen)}
               >
-                {galleryFormOpen ? "Cancel" : "Add Item"}
+                {galleryFormOpen ? "Cancel" : "Add New Image"}
               </Button>
-            </CardAction>
+            </div>
           </CardHeader>
           <CardContent className="space-y-4">
             {galleryFormOpen && (
-              <div className="border p-4 rounded space-y-3 bg-slate-50">
-                <div>
-                  <label className="block text-sm mb-1">Title</label>
-                  <input
-                    className="border p-2 w-full rounded"
-                    value={galleryForm.title}
-                    onChange={(e) =>
-                      setGalleryForm((p) => ({ ...p, title: e.target.value }))
-                    }
-                    placeholder="e.g., Community Outreach Program"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm mb-1">Category</label>
-                  <select
-                    className="border p-2 w-full rounded"
-                    value={galleryForm.category}
-                    onChange={(e) =>
-                      setGalleryForm((p) => ({
-                        ...p,
-                        category: e.target.value,
-                      }))
-                    }
-                  >
-                    <option value="">Select category</option>
-                    <option value="outreach">Outreach</option>
-                    <option value="community">Community</option>
-                    <option value="founder">Founder</option>
-                    <option value="worship">Worship</option>
-                    <option value="youth">Youth</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm mb-1">Image</label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    // ensure single selection; new selection replaces previous
-                    multiple={false}
-                    onChange={(e) => {
-                      const file = e.target.files?.[0] || null;
-                      if (!file) return;
-                      // revoke previous preview if any
-                      if (previewUrl) {
-                        URL.revokeObjectURL(previewUrl);
-                      }
-                      const url = URL.createObjectURL(file);
-                      setSelectedFile(file);
-                      setPreviewUrl(url);
-                    }}
-                    ref={imageRef}
-                    // className="hidden"
-                  />
-                  <Button
-                    onClick={() => imageRef.current?.click()}
-                    disabled={loadingGallery}
-                    className="w-full cursor-pointer"
-                    variant={"outline"}
-                  >
-                    Select Image
-                  </Button>
-                  {previewUrl && (
-                    <div className="mt-2">
-                      <img
-                        src={previewUrl}
-                        alt="preview"
-                        className="w-32 h-32 object-cover rounded"
+              <form onSubmit={addGalleryItem}>
+                <div className="border p-4 rounded-lg space-y-4 bg-muted/50">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="gallery-title">Title</Label>
+                      <Input
+                        id="gallery-title"
+                        value={galleryForm.title}
+                        onChange={(e) =>
+                          setGalleryForm((p) => ({
+                            ...p,
+                            title: e.target.value,
+                          }))
+                        }
+                        placeholder="e.g., Community Outreach"
                       />
                     </div>
-                  )}
-                </div>
-                <Button
-                  onClick={addGalleryItem}
-                  className="w-full cursor-pointer"
-                  disabled={
-                    !galleryForm.title ||
-                    !galleryForm.category ||
-                    !selectedFile ||
-                    !galleryForm.publicId
-                  }
-                >
-                  Save Image
-                </Button>
-              </div>
-            )}
-            <div className="grid grid-cols-3 gap-4">
-              {gallery.map((item) => (
-                <div key={item.id} className="relative">
-                  <img
-                    src={item.imageUrl}
-                    alt={item.title}
-                    className="w-full h-auto rounded"
-                    title={item.title}
-                  />
-                  <p className="text-xs text-gray-600 mt-1 truncate">
-                    {item.title}
-                  </p>
-                  <p className="text-xs text-gray-500 capitalize">
-                    {item.category}
-                  </p>
+                    <div className="space-y-2">
+                      <Label htmlFor="gallery-category">Category</Label>
+                      <Select
+                        value={galleryForm.category}
+                        onValueChange={(value) =>
+                          setGalleryForm((p) => ({ ...p, category: value }))
+                        }
+                      >
+                        <SelectTrigger id="gallery-category">
+                          <SelectValue placeholder="Select a category" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="outreach">Outreach</SelectItem>
+                          <SelectItem value="community">Community</SelectItem>
+                          <SelectItem value="founder">Founder</SelectItem>
+                          <SelectItem value="worship">Worship</SelectItem>
+                          <SelectItem value="youth">Youth</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Image</Label>
+                    <div className="flex items-center gap-4">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple={false}
+                        onChange={(e) => {
+                          const file = e.target.files?.[0] || null;
+                          if (!file) return;
+                          if (previewUrl) URL.revokeObjectURL(previewUrl);
+                          const url = URL.createObjectURL(file);
+                          setSelectedFile(file);
+                          setPreviewUrl(url);
+                        }}
+                        ref={imageRef}
+                        className="hidden"
+                      />
+                      <Button
+                        type="button"
+                        onClick={() => imageRef.current?.click()}
+                        variant="outline"
+                      >
+                        <ImageIcon className="w-4 h-4 mr-2" />
+                        Choose File
+                      </Button>
+                      {previewUrl ? (
+                        <img
+                          src={previewUrl}
+                          alt="preview"
+                          className="w-20 h-20 object-cover rounded-md border"
+                        />
+                      ) : (
+                        <div className="w-20 h-20 rounded-md border border-dashed flex items-center justify-center bg-muted/50">
+                          <ImageIcon className="w-8 h-8 text-muted-foreground" />
+                        </div>
+                      )}
+                    </div>
+                  </div>
                   <Button
-                    size="icon"
-                    variant="destructive"
-                    onClick={() =>
-                      handleDeleteGalleryItem(item.id, item.publicId)
+                    type="submit"
+                    disabled={
+                      !galleryForm.title ||
+                      !galleryForm.category ||
+                      !selectedFile ||
+                      isSubmitting
                     }
-                    className="absolute top-1 right-1"
                   >
-                    <Trash className="w-4 h-4" />
+                    {isSubmitting ? "Saving..." : "Save Image"}
                   </Button>
                 </div>
+              </form>
+            )}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {gallery.map((item) => (
+                <Card
+                  key={item.id}
+                  className="overflow-hidden group w-fit h-fit"
+                >
+                  <div className="relative">
+                    <div className="w-full h-48 bg-gray-200">
+                      <Image
+                        width={300}
+                        height={200}
+                        src={item.imageUrl}
+                        alt={item.title}
+                        className="object-cover"
+                        loading="eager"
+                      />
+                    </div>
+                    <Button
+                      size="icon"
+                      variant="destructive"
+                      onClick={() =>
+                        handleDeleteGalleryItem(item.id, item.publicId)
+                      }
+                      className="absolute top-2 right-2 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <Trash className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <CardContent className="p-3">
+                    <p
+                      className="font-semibold truncate text-sm"
+                      title={item.title}
+                    >
+                      {item.title}
+                    </p>
+                    <p className="text-xs text-muted-foreground capitalize">
+                      {item.category}
+                    </p>
+                  </CardContent>
+                </Card>
               ))}
             </div>
             {!isLastPage && (
