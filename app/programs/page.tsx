@@ -164,7 +164,7 @@ export default function Programs() {
             </div>
             <div className="bg-linear-to-br from-blue-400 to-blue-600 rounded-2xl h-96 overflow-hidden">
               <img
-                src="https://dug72hdrm9v26fbc.public.blob.vercel-storage.com/gallery/asset-16.jpeg"
+                src="/imgs/asset-16.jpeg"
                 alt="Community"
                 className="w-full h-full object-cover"
               />

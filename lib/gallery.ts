@@ -3,6 +3,8 @@ export interface GalleryItem {
   title: string;
   category: string;
   imageUrl: string;
+  // cloudinary public id for deletion
+  publicId?: string;
 }
 
 /**
@@ -78,16 +80,16 @@ export async function addGalleryItem(
  */
 export async function deleteGalleryItem(
   id: string,
-  url: string,
+  publicId: string | undefined,
   authToken: string,
 ): Promise<GalleryResult> {
   try {
-    // first delete the blob itself (if url provided)
-    if (url) {
+    // first delete the image from Cloudinary if we have a publicId
+    if (publicId) {
       await fetch("/api/upload", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url }),
+        body: JSON.stringify({ publicId }),
       });
     }
 

@@ -53,7 +53,7 @@ export function Footer() {
               <button
                 onClick={() => {
                   navigator.clipboard.writeText(window.location.origin);
-                  toast.success("Website URL copied to clipboard!");
+                  toast.success("Website link copied to clipboard!");
                 }}
                 className="text-gray-400 hover:text-blue-400 bg-gray-800 hover:bg-gray-700 transition-colors flex items-center gap-2 p-2 rounded-full"
               >

@@ -173,14 +173,14 @@ export default function About() {
                 name: "Mojisola Olawale",
                 role: "Founder & Executive Director",
                 bio: "Visionary leader with 10+ years in youth development and spiritual formation",
-                src: "https://dug72hdrm9v26fbc.public.blob.vercel-storage.com/gallery/founder-1.jpeg",
+                src: "/imgs/founder-1.jpeg",
               },
               {
                 name: "Femi Olawale",
                 role: "Programs Director & Community Outreach Manager",
                 bio: `Passionate about creating transformative experiences for young leaders and 
                       dedicated to building meaningful relationships within our communities`,
-                src: "https://dug72hdrm9v26fbc.public.blob.vercel-storage.com/gallery/founder-3.jpeg",
+                src: "/imgs/founder-3.jpeg",
               },
             ].map((member, idx) => (
               <Card key={idx} className="text-center">

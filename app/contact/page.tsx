@@ -279,7 +279,7 @@ export default function Contact() {
                     <button
                       onClick={() => {
                         navigator.clipboard.writeText(window.location.origin);
-                        toast.success("Website URL copied to clipboard!");
+                        toast.success("Website link copied to clipboard!");
                       }}
                       className="text-blue-600 hover:text-blue-700 bg-blue-100 hover:bg-blue-50 transition-colors flex items-center gap-2 p-2 rounded-full"
                     >

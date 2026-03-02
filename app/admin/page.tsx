@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { auth } from "@/lib/firebase-client";
 import {
   signInWithEmailAndPassword,
@@ -28,15 +28,16 @@ import {
   deleteGalleryItem,
   getGalleryItems,
 } from "@/lib/gallery";
-import { Module } from "vm";
 import { formatPhoneNumber } from "@/lib/utils";
 
 export default function AdminPage() {
+  const pageSize = 6;
+
+  const imageRef = useRef<HTMLInputElement>(null);
+
   const [user, setUser] = useState<User | null>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const pageSize = 6;
   const [page, setPage] = useState(0);
   const [isLastPage, setIsLastPage] = useState(false);
   const [loadingGallery, setLoadingGallery] = useState(false);
@@ -58,8 +59,10 @@ export default function AdminPage() {
     title: "",
     category: "",
     imageUrl: "",
+    publicId: "",
   });
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (u) => setUser(u));
@@ -72,6 +75,15 @@ export default function AdminPage() {
     if (!user) return null;
     return user.getIdToken();
   };
+
+  // revoke object URL previews when they change or on unmount
+  useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
 
   const login = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -159,8 +171,10 @@ export default function AdminPage() {
     if (items.length < pageSize) setIsLastPage(true);
   };
 
-  // upload helper returns url or null
-  const uploadFile = async (file: File): Promise<string | null> => {
+  // upload helper returns url and publicId or null
+  const uploadFile = async (
+    file: File,
+  ): Promise<{ url: string; publicId: string } | null> => {
     const form = new FormData();
     form.append("file", file);
     try {
@@ -169,7 +183,10 @@ export default function AdminPage() {
         body: form,
       });
       const blob = await r.json();
-      return blob?.url || null;
+      if (blob?.url && blob?.publicId) {
+        return { url: blob.url, publicId: blob.publicId };
+      }
+      return null;
     } catch (err) {
       console.error("upload failed", err);
       return null;
@@ -180,9 +197,13 @@ export default function AdminPage() {
   const handleImageUpload = async (file: File) => {
     if (!file) return;
     setSelectedFile(file);
-    const url = await uploadFile(file);
-    if (url) {
-      setGalleryForm((prev) => ({ ...prev, imageUrl: url }));
+    const result = await uploadFile(file);
+    if (result) {
+      setGalleryForm((prev) => ({
+        ...prev,
+        imageUrl: result.url,
+        publicId: result.publicId,
+      }));
       toast.success("Image uploaded. Add title and category to save.");
     } else {
       toast.error("Upload failed");
@@ -195,15 +216,24 @@ export default function AdminPage() {
       await handleImageUpload(selectedFile);
     }
 
-    // ensure we have a url; after upload attempt above the form should be populated
+    // ensure we have a url and publicId; after upload attempt above the form should be populated
     if (!galleryForm.imageUrl && selectedFile) {
-      const url = await uploadFile(selectedFile);
-      if (url) {
-        setGalleryForm((f) => ({ ...f, imageUrl: url }));
+      const result = await uploadFile(selectedFile);
+      if (result) {
+        setGalleryForm((f) => ({
+          ...f,
+          imageUrl: result.url,
+          publicId: result.publicId,
+        }));
       }
     }
 
-    if (!galleryForm.title || !galleryForm.category || !galleryForm.imageUrl) {
+    if (
+      !galleryForm.title ||
+      !galleryForm.category ||
+      !galleryForm.imageUrl ||
+      !galleryForm.publicId
+    ) {
       toast.error("Please fill in all fields");
       return;
     }
@@ -225,20 +255,21 @@ export default function AdminPage() {
 
     if (res.ok) {
       toast.success("Gallery item added");
-      setGalleryForm({ title: "", category: "", imageUrl: "" });
+      setGalleryForm({ title: "", category: "", imageUrl: "", publicId: "" });
       setGalleryFormOpen(false);
       setSelectedFile(null);
+      setPreviewUrl(null);
       fetchGallery();
     } else {
       toast.error("Failed to add gallery item");
     }
   };
 
-  const handleDeleteGalleryItem = async (id?: string, url?: string) => {
+  const handleDeleteGalleryItem = async (id?: string, publicId?: string) => {
     if (!id) return;
     const token = await getToken();
     if (!token) return;
-    const result = await deleteGalleryItem(id, url || "", token);
+    const result = await deleteGalleryItem(id, publicId, token);
     if (result.success) {
       toast.success("Gallery item deleted");
       fetchGallery();
@@ -451,6 +482,7 @@ export default function AdminPage() {
                     <option value="">Select category</option>
                     <option value="outreach">Outreach</option>
                     <option value="community">Community</option>
+                    <option value="founder">Founder</option>
                     <option value="worship">Worship</option>
                     <option value="youth">Youth</option>
                   </select>
@@ -460,23 +492,51 @@ export default function AdminPage() {
                   <input
                     type="file"
                     accept="image/*"
+                    // ensure single selection; new selection replaces previous
+                    multiple={false}
                     onChange={(e) => {
                       const file = e.target.files?.[0] || null;
-                      if (file) setSelectedFile(file);
+                      if (!file) return;
+                      // revoke previous preview if any
+                      if (previewUrl) {
+                        URL.revokeObjectURL(previewUrl);
+                      }
+                      const url = URL.createObjectURL(file);
+                      setSelectedFile(file);
+                      setPreviewUrl(url);
                     }}
+                    ref={imageRef}
+                    // className="hidden"
                   />
-                  {galleryForm.imageUrl && (
+                  <Button
+                    onClick={() => imageRef.current?.click()}
+                    disabled={loadingGallery}
+                    className="w-full cursor-pointer"
+                    variant={"outline"}
+                  >
+                    Select Image
+                  </Button>
+                  {previewUrl && (
                     <div className="mt-2">
                       <img
-                        src={galleryForm.imageUrl}
+                        src={previewUrl}
                         alt="preview"
                         className="w-32 h-32 object-cover rounded"
                       />
                     </div>
                   )}
                 </div>
-                <Button onClick={addGalleryItem} className="w-full">
-                  Save Item
+                <Button
+                  onClick={addGalleryItem}
+                  className="w-full cursor-pointer"
+                  disabled={
+                    !galleryForm.title ||
+                    !galleryForm.category ||
+                    !selectedFile ||
+                    !galleryForm.publicId
+                  }
+                >
+                  Save Image
                 </Button>
               </div>
             )}
@@ -499,7 +559,7 @@ export default function AdminPage() {
                     size="icon"
                     variant="destructive"
                     onClick={() =>
-                      handleDeleteGalleryItem(item.id, item.imageUrl)
+                      handleDeleteGalleryItem(item.id, item.publicId)
                     }
                     className="absolute top-1 right-1"
                   >
