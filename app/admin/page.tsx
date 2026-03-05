@@ -496,6 +496,7 @@ export default function AdminPage() {
                           <SelectItem value="outreach">Outreach</SelectItem>
                           <SelectItem value="community">Community</SelectItem>
                           <SelectItem value="founder">Founder</SelectItem>
+                          <SelectItem value="flyer">Flyer</SelectItem>
                           <SelectItem value="worship">Worship</SelectItem>
                           <SelectItem value="youth">Youth</SelectItem>
                         </SelectContent>

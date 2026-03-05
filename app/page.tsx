@@ -235,6 +235,51 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Program Ad */}
+      <section className="bg-white py-16 md:py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <h2 className="text-3xl font-bold text-gray-900 text-center mb-8">
+            Join Our Prayer & Mentorship Group
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div>
+              <p className="text-gray-700 mb-4">
+                <strong>Age range:</strong> 13 to 20 years
+              </p>
+              <p className="text-gray-700 mb-4">
+                <strong>When:</strong> 1 hour every Saturday online, 5am
+              </p>
+              <p className="text-gray-700 mb-6">
+                We teach our teenagers the how &amp; importance of prayer. We
+                listen to their challenges and provide a suitable solution.
+              </p>
+              <Link
+                href="https://chat.whatsapp.com/JZgbGPKGvyoAkGrxZjXi72?mode=gi_t"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3">
+                  Join Group
+                </Button>
+              </Link>
+            </div>
+            <div className="flex justify-center">
+              {/* smaller image container */}
+              <div className="rounded-2xl overflow-hidden shadow-lg w-full max-w-sm h-64">
+                <Image
+                  loading="eager"
+                  src="/imgs/program.jpeg"
+                  alt="Prayer & Mentorship Program"
+                  width={400}
+                  height={400}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="bg-blue-600 text-white py-16 md:py-24 rounded-3xl mx-6 my-16 md:mx-12">
         <div className="max-w-4xl mx-auto px-6 text-center">
