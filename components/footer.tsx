@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Facebook, Mail, Share2 } from "lucide-react";
+import { Facebook, Instagram, Share2, Youtube } from "lucide-react";
 import { toast } from "sonner";
 import { getContactInfo, type ContactInfo } from "@/lib/contact";
+import Image from "next/image";
 
 export function Footer() {
   const [contactInfo, setContactInfo] = useState<ContactInfo>({
@@ -28,34 +29,53 @@ export function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center text-sm font-bold">
-                A
+              <Image
+                loading="eager"
+                src="/imgs/ekklisa-elite.jpeg"
+                alt="Repairer of the Breach"
+                width={32}
+                height={32}
+                className="w-8 h-8 rounded-full"
+              />
+              <div className="flex flex-col">
+                <span className="font-bold text-lg">Ekklisa Elite</span>
+                <span className="font-bold text-xs">
+                  Repairer of the Breach
+                </span>
               </div>
-              <span className="font-bold text-lg">Repairer of the Breach</span>
             </div>
             <p className="text-gray-400 text-sm">
               Nurturing the next generation of Christian leaders and
               changemakers
             </p>
             <div className="flex gap-4 mt-4">
-              {/* <Link
-                href="#"
-                className="text-gray-400 hover:text-blue-400 transition-colors"
+              <Link
+                target="_blank"
+                href="https://www.facebook.com/share/17y7nthgXz/"
+                className="text-gray-400 hover:text-purple-400 bg-gray-800 hover:bg-gray-700 transition-colors flex items-center gap-2 p-2 rounded-full"
               >
                 <Facebook size={20} />
               </Link>
               <Link
-                href="#"
-                className="text-gray-400 hover:text-blue-400 transition-colors"
+                target="_blank"
+                href="https://www.instagram.com/bridgerepairernetwork?utm_source=qr&igsh=YWN4OWhlbGdjcmI="
+                className="text-gray-400 hover:text-purple-400 bg-gray-800 hover:bg-gray-700 transition-colors flex items-center gap-2 p-2 rounded-full"
               >
-                <Mail size={20} />
-              </Link> */}
+                <Instagram size={20} />
+              </Link>
+              <Link
+                target="_blank"
+                href="https://youtube.com/@kingdommatters4us?si=Kx6I4S268xNX6Dz-"
+                className="text-gray-400 hover:text-purple-400 bg-gray-800 hover:bg-gray-700 transition-colors flex items-center gap-2 p-2 rounded-full"
+              >
+                <Youtube size={20} />
+              </Link>
               <button
                 onClick={() => {
                   navigator.clipboard.writeText(window.location.origin);
                   toast.success("Website link copied to clipboard!");
                 }}
-                className="text-gray-400 hover:text-blue-400 bg-gray-800 hover:bg-gray-700 transition-colors flex items-center gap-2 p-2 rounded-full"
+                className="text-gray-400 hover:text-purple-400 bg-gray-800 hover:bg-gray-700 transition-colors flex items-center gap-2 p-2 rounded-full"
               >
                 <Share2 size={20} />
                 <p>share</p>
@@ -70,7 +90,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/"
-                  className="hover:text-blue-400 transition-colors"
+                  className="hover:text-purple-400 transition-colors"
                 >
                   Home
                 </Link>
@@ -78,7 +98,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/about"
-                  className="hover:text-blue-400 transition-colors"
+                  className="hover:text-purple-400 transition-colors"
                 >
                   About Us
                 </Link>
@@ -86,7 +106,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/programs"
-                  className="hover:text-blue-400 transition-colors"
+                  className="hover:text-purple-400 transition-colors"
                 >
                   Our Programs
                 </Link>
@@ -94,7 +114,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/gallery"
-                  className="hover:text-blue-400 transition-colors"
+                  className="hover:text-purple-400 transition-colors"
                 >
                   Gallery
                 </Link>
@@ -102,7 +122,7 @@ export function Footer() {
               <li>
                 <Link
                   href="/contact"
-                  className="hover:text-blue-400 transition-colors"
+                  className="hover:text-purple-400 transition-colors"
                 >
                   Contact
                 </Link>

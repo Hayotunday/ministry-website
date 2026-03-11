@@ -2,7 +2,9 @@ export interface GalleryItem {
   id?: string;
   title: string;
   category: string;
-  imageUrl: string;
+  imageUrl?: string;
+  videoUrl?: string;
+  type: string;
   // cloudinary public id for deletion
   publicId?: string;
 }
@@ -81,6 +83,7 @@ export async function addGalleryItem(
 export async function deleteGalleryItem(
   id: string,
   publicId: string | undefined,
+  type: string,
   authToken: string,
 ): Promise<GalleryResult> {
   try {
@@ -93,7 +96,7 @@ export async function deleteGalleryItem(
       });
     }
 
-    const res = await fetch(`/api/admin/gallery?id=${id}`, {
+    const res = await fetch(`/api/admin/gallery?id=${id}&type=${type}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${authToken}`,

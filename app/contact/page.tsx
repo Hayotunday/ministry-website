@@ -4,7 +4,15 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Mail, Phone, MapPin, Share2, Facebook } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Share2,
+  Facebook,
+  Youtube,
+  Instagram,
+} from "lucide-react";
 import { useState, useEffect } from "react";
 import { getContactInfo, type ContactInfo } from "@/lib/contact";
 import {
@@ -14,6 +22,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { toast } from "sonner";
+import Link from "next/link";
 
 export default function Contact() {
   const [contactInfo, setContactInfo] = useState<ContactInfo>({
@@ -123,7 +132,7 @@ export default function Contact() {
             {/* Form */}
             <div className="lg:col-span-2">
               <div className="flex items-center gap-3 mb-8">
-                <Mail className="text-blue-600" size={24} />
+                <Mail className="text-purple-600" size={24} />
                 <h2 className="text-3xl font-bold text-gray-900">
                   Send us a Message
                 </h2>
@@ -145,7 +154,7 @@ export default function Contact() {
                       value={formData.fullName}
                       onChange={handleChange}
                       placeholder="John Doe"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                       required
                     />
                   </div>
@@ -163,7 +172,7 @@ export default function Contact() {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="john@example.com"
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                       required
                     />
                   </div>
@@ -183,7 +192,7 @@ export default function Contact() {
                     value={formData.subject}
                     onChange={handleChange}
                     placeholder="How can we help you?"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                     required
                   />
                 </div>
@@ -202,7 +211,7 @@ export default function Contact() {
                     onChange={handleChange}
                     placeholder="Your message here..."
                     rows={6}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent resize-none"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent resize-none"
                     required
                   ></textarea>
                 </div>
@@ -210,7 +219,7 @@ export default function Contact() {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 font-semibold disabled:opacity-70"
+                  className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 font-semibold disabled:opacity-70"
                 >
                   {isSubmitting
                     ? "Sending..."
@@ -228,9 +237,9 @@ export default function Contact() {
               </h2>
 
               <div className="space-y-6">
-                <Card className="bg-blue-50 border-0">
+                <Card className="bg-purple-50 border-0">
                   <CardContent className="pt-6 flex items-center gap-4">
-                    <Mail className="text-blue-600 shrink-0" size={24} />
+                    <Mail className="text-purple-600 shrink-0" size={24} />
                     <div>
                       <p className="text-sm text-gray-600 uppercase font-semibold">
                         Email us
@@ -242,9 +251,9 @@ export default function Contact() {
                   </CardContent>
                 </Card>
 
-                <Card className="bg-blue-50 border-0">
+                <Card className="bg-purple-50 border-0">
                   <CardContent className="pt-6 flex items-center gap-4">
-                    <Phone className="text-blue-600 shrink-0" size={24} />
+                    <Phone className="text-purple-600 shrink-0" size={24} />
                     <div>
                       <p className="text-sm text-gray-600 uppercase font-semibold">
                         Call us
@@ -256,9 +265,9 @@ export default function Contact() {
                   </CardContent>
                 </Card>
 
-                <Card className="bg-blue-50 border-0">
+                <Card className="bg-purple-50 border-0">
                   <CardContent className="pt-6 flex items-center gap-4">
-                    <MapPin className="text-blue-600 shrink-0" size={24} />
+                    <MapPin className="text-purple-600 shrink-0" size={24} />
                     <div>
                       <p className="text-sm text-gray-600 uppercase font-semibold">
                         Visit us
@@ -276,28 +285,37 @@ export default function Contact() {
                     Follow our journey
                   </p>
                   <div className="flex gap-4">
+                    <Link
+                      target="_blank"
+                      href="https://www.facebook.com/share/17y7nthgXz/"
+                      className="text-purple-600 hover:text-purple-700 bg-purple-100 hover:bg-purple-50 transition-colors flex items-center gap-2 p-2 rounded-full"
+                    >
+                      <Facebook size={20} />
+                    </Link>
+                    <Link
+                      target="_blank"
+                      href="https://www.instagram.com/bridgerepairernetwork?utm_source=qr&igsh=YWN4OWhlbGdjcmI="
+                      className="text-purple-600 hover:text-purple-700 bg-purple-100 hover:bg-purple-50 transition-colors flex items-center gap-2 p-2 rounded-full"
+                    >
+                      <Instagram size={20} />
+                    </Link>
+                    <Link
+                      target="_blank"
+                      href="https://youtube.com/@kingdommatters4us?si=Kx6I4S268xNX6Dz-"
+                      className="text-purple-600 hover:text-purple-700 bg-purple-100 hover:bg-purple-50 transition-colors flex items-center gap-2 p-2 rounded-full"
+                    >
+                      <Youtube size={20} />
+                    </Link>
                     <button
                       onClick={() => {
                         navigator.clipboard.writeText(window.location.origin);
                         toast.success("Website link copied to clipboard!");
                       }}
-                      className="text-blue-600 hover:text-blue-700 bg-blue-100 hover:bg-blue-50 transition-colors flex items-center gap-2 p-2 rounded-full"
+                      className="text-purple-600 hover:text-purple-700 bg-purple-100 hover:bg-purple-50 transition-colors flex items-center gap-2 p-2 rounded-full"
                     >
                       <Share2 size={24} />
                       <p>share</p>
                     </button>
-                    {/* <a
-                      href="#"
-                      className="text-blue-600 hover:text-blue-700 transition-colors"
-                    >
-                      <Facebook size={24} />
-                    </a>
-                    <a
-                      href="#"
-                      className="text-blue-600 hover:text-blue-700 transition-colors"
-                    >
-                      <Mail size={24} />
-                    </a> */}
                   </div>
                 </div>
               </div>
@@ -333,7 +351,7 @@ export default function Contact() {
                 value={`item-${idx}`}
                 className="border border-gray-200 rounded-lg px-6"
               >
-                <AccordionTrigger className="text-gray-900 font-semibold hover:text-blue-600">
+                <AccordionTrigger className="text-gray-900 font-semibold hover:text-purple-600">
                   {faq.question}
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-600">

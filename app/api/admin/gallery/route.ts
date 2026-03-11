@@ -25,6 +25,19 @@ export async function POST(request: Request) {
   try {
     await verifyAuth(request);
     const body = await request.json();
+
+    if (body.type === "image" && !body.imageUrl) {
+      return NextResponse.json(
+        { error: "Missing imageUrl for image" },
+        { status: 400 },
+      );
+    } else if (body.type === "video" && !body.videoUrl) {
+      return NextResponse.json(
+        { error: "Missing videoUrl for video" },
+        { status: 400 },
+      );
+    }
+
     const db = requireDbAdmin();
     const ref = await db.collection(COLLECTION).add(body);
     return NextResponse.json({ id: ref.id });

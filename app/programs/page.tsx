@@ -71,12 +71,12 @@ export default function Programs() {
       <section className="bg-white py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
-            <p className="text-blue-600 font-semibold uppercase text-sm mb-4">
+            <p className="text-purple-600 font-semibold uppercase text-sm mb-4">
               OUR MISSION
             </p>
             <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
               Holistic Development Rooted in{" "}
-              <span className="text-blue-600">Biblical Foundations</span>
+              <span className="text-purple-600">Biblical Foundations</span>
             </h1>
             <p className="text-gray-600 text-xl max-w-2xl mx-auto">
               We provide practical guidance and spiritual restoration for every
@@ -117,7 +117,7 @@ export default function Programs() {
                     {program.features.map((feature, fidx) => (
                       <li key={fidx} className="flex items-start gap-3">
                         <CheckCircle
-                          className="text-blue-600 shrink-0 mt-1"
+                          className="text-purple-600 shrink-0 mt-1"
                           size={20}
                         />
                         <span className="text-gray-700 font-medium">
@@ -153,16 +153,20 @@ export default function Programs() {
               </p>
               <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <p className="text-5xl font-bold text-blue-600 mb-2">500+</p>
+                  <p className="text-5xl font-bold text-purple-600 mb-2">
+                    500+
+                  </p>
                   <p className="text-gray-700 font-medium">Lives Helped</p>
                 </div>
                 <div>
-                  <p className="text-5xl font-bold text-blue-600 mb-2">24/7</p>
+                  <p className="text-5xl font-bold text-purple-600 mb-2">
+                    24/7
+                  </p>
                   <p className="text-gray-700 font-medium">Active Support</p>
                 </div>
               </div>
             </div>
-            <div className="bg-linear-to-br from-blue-400 to-blue-600 rounded-2xl h-96 overflow-hidden">
+            <div className="bg-linear-to-br from-purple-400 to-purple-600 rounded-2xl h-96 overflow-hidden">
               <img
                 src="/imgs/asset-16.jpeg"
                 alt="Community"
@@ -174,23 +178,23 @@ export default function Programs() {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-blue-600 text-white py-16 md:py-24 rounded-3xl mx-6 mb-16">
+      <section className="bg-purple-600 text-white py-16 md:py-24 rounded-3xl mx-6 mb-16">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             Ready to start your journey?
           </h2>
-          <p className="text-blue-100 mb-8 text-lg">
+          <p className="text-purple-100 mb-8 text-lg">
             Whether you're looking for mentorship or a way to give back, there's
             a place for you in our community.
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
             <Link href="/contact">
-              <Button className="bg-white text-blue-600 hover:bg-blue-50 px-8 py-3 font-semibold">
+              <Button className="bg-white text-purple-600 hover:bg-purple-50 px-8 py-3 font-semibold">
                 Apply for Mentorship
               </Button>
             </Link>
             <Link href="/contact">
-              <Button className="border-white text-white hover:bg-blue-700 px-8 py-3 font-semibold">
+              <Button className="border-white text-white hover:bg-purple-700 px-8 py-3 font-semibold">
                 Become a Volunteer
               </Button>
             </Link>

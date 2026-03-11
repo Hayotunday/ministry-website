@@ -104,15 +104,15 @@ export default function About() {
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-8 py-12 border-y border-gray-200">
             <div className="flex flex-col items-center text-center">
-              <p className="text-4xl font-bold text-blue-600 mb-2">500+</p>
+              <p className="text-4xl font-bold text-purple-600 mb-2">500+</p>
               <p className="text-gray-600">Lives Impacted</p>
             </div>
             <div className="flex flex-col items-center text-center">
-              <p className="text-4xl font-bold text-blue-600 mb-2">24/7</p>
+              <p className="text-4xl font-bold text-purple-600 mb-2">24/7</p>
               <p className="text-gray-600">Active Support</p>
             </div>
             <div className="flex flex-col items-center text-center">
-              <p className="text-4xl font-bold text-blue-600 mb-2">10+</p>
+              <p className="text-4xl font-bold text-purple-600 mb-2">10+</p>
               <p className="text-gray-600">Years Experience</p>
             </div>
           </div>
@@ -185,7 +185,7 @@ export default function About() {
             ].map((member, idx) => (
               <Card key={idx} className="text-center">
                 <CardContent className="pt-8">
-                  <div className="w-24 h-24 bg-linear-to-br from-blue-400 to-blue-600 rounded-full mx-auto mb-4">
+                  <div className="w-24 h-24 bg-linear-to-br from-purple-400 to-purple-600 rounded-full mx-auto mb-4">
                     <Image
                       loading="eager"
                       src={member.src}
@@ -198,7 +198,7 @@ export default function About() {
                   <h3 className="text-xl font-bold text-gray-900 mb-1">
                     {member.name}
                   </h3>
-                  <p className="text-blue-600 font-semibold mb-3">
+                  <p className="text-purple-600 font-semibold mb-3">
                     {member.role}
                   </p>
                   <p className="text-gray-600 text-sm">{member.bio}</p>
