@@ -31,7 +31,7 @@ export function Header() {
             className="w-8 h-8 rounded-full"
           />
           <div className="flex flex-col">
-            <span className="font-bold text-lg">Ekklisa Elite</span>
+            <span className="font-bold text-lg">Ekklesia Elite</span>
             <span className="text-gray-900 text-xs">
               Repairer of the Breach
             </span>
