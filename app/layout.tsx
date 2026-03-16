@@ -9,11 +9,11 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Repairer of the Breach",
+  title: "Ekklesia Elite Evangelical Ministry",
   description:
     "Nurturing the next generation of Christian leaders and changemakers",
   generator: "hayotunday",
-  applicationName: "Repairer of the Breach Ministry",
+  applicationName: "Ekklesia Elite Evangelical Ministry",
   icons: {
     icon: [
       {
