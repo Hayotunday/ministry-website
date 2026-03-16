@@ -29,7 +29,7 @@ export default function Home() {
                 A Better Tomorrow Starts Today
               </p>
               <h1 className="text-5xl md:text-6xl font-bold text-gray-900">
-                Ekklisa Elite:
+                Ekklesia Elite Evangelical Ministry:
               </h1>
               <h1 className="text-2xl md:text-3xl font-bold text-purple-600 mb-6">
                 Repairer of the Breach
