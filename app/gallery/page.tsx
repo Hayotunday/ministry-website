@@ -16,7 +16,7 @@ export default function Gallery() {
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [visibleCount, setVisibleCount] = useState(6);
-  const itemsPerPage = 6;
+  const itemsPerPage = 10;
 
   const fetchGallery = async () => {
     setIsLoading(true);
@@ -96,37 +96,19 @@ export default function Gallery() {
         </div>
       </section>
 
-      {/* Filter Buttons */}
-      {/* <section className="bg-white py-12">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-wrap gap-3 justify-center">
-            {filters.map((filter) => (
-              <button
-                key={filter}
-                onClick={() => setActiveFilter(filter)}
-                className={`px-6 py-2 rounded-full font-semibold transition-all capitalize ${
-                  activeFilter === filter
-                    ? "bg-purple-600 text-white"
-                    : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-                }`}
-              >
-                {filter === "all" ? "All Activities" : filter}
-              </button>
-            ))}
-          </div>
-        </div>
-      </section> */}
-
       {/* Gallery Grid */}
       <section className="bg-gray-50 py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-6">
           {/* Media Type Tabs */}
-          <div className="flex justify-center mb-12">
+          <div className="flex flex-col items-center gap-6 mb-12">
             <div className="inline-flex p-1 bg-gray-200 rounded-xl">
               {(["all", "image", "video"] as const).map((tab) => (
                 <button
                   key={tab}
-                  onClick={() => setActiveTab(tab)}
+                  onClick={() => {
+                    setActiveTab(tab);
+                    setActiveFilter("all");
+                  }}
                   className={`px-8 py-2.5 rounded-lg font-semibold transition-all capitalize ${
                     activeTab === tab
                       ? "bg-white text-purple-600 shadow-md"
@@ -138,6 +120,24 @@ export default function Gallery() {
                     : tab === "image"
                       ? "Photos"
                       : "Videos"}
+                </button>
+              ))}
+            </div>
+
+            {/* Category Filters (Shown when Photos tab is active) */}
+
+            <div className="flex flex-wrap gap-2 justify-center">
+              {filters.map((filter) => (
+                <button
+                  key={filter}
+                  onClick={() => setActiveFilter(filter)}
+                  className={`px-5 py-1.5 rounded-full text-sm font-semibold transition-all capitalize ${
+                    activeFilter === filter
+                      ? "bg-purple-600 text-white shadow-sm"
+                      : "bg-white text-gray-600 hover:bg-gray-100 border border-gray-200"
+                  }`}
+                >
+                  {filter === "all" ? "All Photos" : filter}
                 </button>
               ))}
             </div>
