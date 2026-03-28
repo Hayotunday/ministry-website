@@ -11,44 +11,33 @@ import { getGalleryItems, type GalleryItem } from "@/lib/gallery";
 
 export default function Gallery() {
   const [activeFilter, setActiveFilter] = useState("all");
+  const [activeTab, setActiveTab] = useState<"all" | "image" | "video">("all");
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [page, setPage] = useState(0);
-  const [isLastPage, setIsLastPage] = useState(false);
-  const pageSize = 6;
+  const [visibleCount, setVisibleCount] = useState(6);
+  const itemsPerPage = 6;
 
-  const fetchGallery = async (
-    pageNum: number,
-    filter: string,
-    append = false,
-  ) => {
+  const fetchGallery = async () => {
     setIsLoading(true);
-    const category = filter === "all" ? undefined : filter;
-    const items = await getGalleryItems(pageNum, pageSize, category);
-
-    if (append) {
-      setGalleryItems((prev) => [...prev, ...items]);
-    } else {
-      setGalleryItems(items);
-    }
-
-    if (items.length < pageSize) {
-      setIsLastPage(true);
-    } else {
-      setIsLastPage(false);
-    }
-    setPage(pageNum);
+    // Fetch all items from the database to handle filtering and display limits locally
+    const items = await getGalleryItems(0, 1000);
+    setGalleryItems(items);
     setIsLoading(false);
   };
 
   useEffect(() => {
-    fetchGallery(0, activeFilter);
-  }, [activeFilter]);
+    fetchGallery();
+  }, []);
+
+  useEffect(() => {
+    // Reset visible items when filters or tabs change
+    setVisibleCount(itemsPerPage);
+  }, [activeTab, activeFilter]);
 
   const filters = ["all", "outreach", "community", "worship", "youth"];
 
-  const loadMore = () => fetchGallery(page + 1, activeFilter, true);
+  const loadMore = () => setVisibleCount((prev) => prev + itemsPerPage);
 
   // scroll-to-top visibility toggle
   const [showScrollButton, setShowScrollButton] = useState(false);
@@ -71,15 +60,24 @@ export default function Gallery() {
     return match && match[2].length === 11 ? match[2] : null;
   };
 
-  const selectedVideoEmbedUrl = useMemo(() => {
-    if (selectedItem?.type === "video" && selectedItem.videoUrl) {
-      const videoId = getYouTubeVideoId(selectedItem.videoUrl);
-      if (videoId) {
-        return `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-      }
+  const filteredItems = useMemo(() => {
+    let items = galleryItems;
+
+    if (activeFilter !== "all") {
+      items = items.filter((item) => item.category === activeFilter);
     }
-    return null;
-  }, [selectedItem]);
+
+    if (activeTab === "all") return items;
+    return items.filter((item) =>
+      activeTab === "video" ? item.type === "video" : item.type !== "video",
+    );
+  }, [galleryItems, activeTab, activeFilter]);
+
+  const displayedItems = useMemo(() => {
+    return filteredItems.slice(0, visibleCount);
+  }, [filteredItems, visibleCount]);
+
+  const isLastPage = visibleCount >= filteredItems.length;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -122,11 +120,40 @@ export default function Gallery() {
       {/* Gallery Grid */}
       <section className="bg-gray-50 py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-6">
+          {/* Media Type Tabs */}
+          <div className="flex justify-center mb-12">
+            <div className="inline-flex p-1 bg-gray-200 rounded-xl">
+              {(["all", "image", "video"] as const).map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`px-8 py-2.5 rounded-lg font-semibold transition-all capitalize ${
+                    activeTab === tab
+                      ? "bg-white text-purple-600 shadow-md"
+                      : "text-gray-600 hover:text-gray-900"
+                  }`}
+                >
+                  {tab === "all"
+                    ? "All"
+                    : tab === "image"
+                      ? "Photos"
+                      : "Videos"}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-max">
-            {galleryItems.map((item, idx) => (
+            {displayedItems.map((item, idx) => (
               <div
                 key={item.id}
-                onClick={() => setSelectedItem(item)}
+                onClick={() => {
+                  if (item.type === "video" && item.videoUrl) {
+                    window.open(item.videoUrl, "_blank", "noopener,noreferrer");
+                  } else {
+                    setSelectedItem(item);
+                  }
+                }}
                 className={`relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition-all group cursor-pointer ${
                   idx === 0 || idx === 4 ? "md:col-span-1 md:row-span-2" : ""
                 }`}
@@ -231,29 +258,16 @@ export default function Gallery() {
             onClick={(e) => e.stopPropagation()}
             onBlur={() => setSelectedItem(null)}
           >
-            {selectedItem.type === "video" && selectedVideoEmbedUrl ? (
-              <div className="aspect-video w-full bg-black">
-                <iframe
-                  src={selectedVideoEmbedUrl}
-                  title={selectedItem.title}
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                  className="w-full h-full"
-                ></iframe>
-              </div>
-            ) : (
-              selectedItem.imageUrl && (
-                <Image
-                  loading="eager"
-                  src={selectedItem.imageUrl}
-                  alt="Gallery preview"
-                  width={1200}
-                  height={800}
-                  className="object-contain rounded-lg w-full h-auto max-h-[90vh]"
-                  priority
-                />
-              )
+            {selectedItem.imageUrl && (
+              <Image
+                loading="eager"
+                src={selectedItem.imageUrl}
+                alt="Gallery preview"
+                width={1200}
+                height={800}
+                className="object-contain rounded-lg w-full h-auto max-h-[90vh]"
+                priority
+              />
             )}
           </div>
         </div>

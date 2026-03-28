@@ -6,8 +6,6 @@ const COLLECTION = "gallery";
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const page = parseInt(searchParams.get("page") || "0", 10);
-    const limit = parseInt(searchParams.get("limit") || "12", 10);
     const category = searchParams.get("category") || null;
 
     const db = requireDbAdmin();
@@ -20,11 +18,7 @@ export async function GET(request: Request) {
       ? items.filter((i) => i.category === category)
       : items;
 
-    const start = page * limit;
-    const end = start + limit;
-    const pageItems = filtered.slice(start, end);
-
-    return NextResponse.json(pageItems);
+    return NextResponse.json(filtered);
   } catch (err) {
     console.error("gallery GET error", err);
     // Return empty array instead of error so gallery still renders
