@@ -11,6 +11,19 @@ import {
   Zap,
   Smile,
   Award,
+  Camera,
+  Video,
+  Share2,
+  Clapperboard,
+  Palette,
+  BarChart3,
+  Globe,
+  Radio,
+  CheckCircle,
+  Cpu,
+  FileText,
+  ShieldCheck,
+  Phone,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -288,6 +301,67 @@ export default function Home() {
             </div>
             <div className="flex-1 hidden md:flex justify-center opacity-20">
               <Heart className="w-64 h-64 text-purple-600" strokeWidth={1} />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Ekklesia Elite Team Section */}
+      <section className="bg-gray-50 py-16 md:py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Ekklesia Elite Team
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+              Our professional team offers a wide range of digital solutions and
+              services to help your brand or business thrive in the digital age.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {[
+              { name: "Photography", icon: Camera },
+              { name: "Videography", icon: Video },
+              { name: "Social Media Management", icon: Share2 },
+              { name: "Video Editing", icon: Clapperboard },
+              { name: "Graphics Design", icon: Palette },
+              { name: "Data Analysis", icon: BarChart3 },
+              { name: "Web Design", icon: Globe },
+              { name: "Live Streaming Service", icon: Radio },
+              { name: "Google Verification Service", icon: CheckCircle },
+              { name: "Blockchain", icon: Cpu },
+              { name: "Business Name Registration", icon: FileText },
+              { name: "Trade Marking", icon: ShieldCheck },
+            ].map((service, idx) => {
+              const Icon = service.icon;
+              return (
+                <div
+                  key={idx}
+                  className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col items-center text-center"
+                >
+                  <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center text-purple-600 mb-4">
+                    <Icon size={24} />
+                  </div>
+                  <h3 className="font-semibold text-gray-900">
+                    {service.name}
+                  </h3>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="mt-16 text-center">
+            <div className="inline-flex flex-col md:flex-row items-center gap-6 bg-white p-6 md:px-12 rounded-3xl shadow-sm border border-gray-100">
+              <p className="text-gray-900 font-bold text-xl">
+                Ready to get started?
+              </p>
+              <Link href="tel:08027815383">
+                <Button className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-6 h-auto text-lg font-semibold rounded-xl flex items-center gap-3">
+                  <Phone size={20} />
+                  08027815383
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
